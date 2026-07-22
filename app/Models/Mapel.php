@@ -32,7 +32,7 @@ class Mapel extends Model
     public function scopeAkademik($query)
     {
         return $query->whereNotIn('kode', [
-            'IST', 'DZH', 'ASHR_SMP', 'UPCR_SMP', 'DHUHA', 
+            'IST', 'DZH', 'ASHR_SMP', 'UPCR_SMP', 'DHUHA',
             'UPCR', 'QAIL', 'ISHOMA', 'PLG', 'SNCK', 'TRNS', 'ASHR'
         ]);
     }

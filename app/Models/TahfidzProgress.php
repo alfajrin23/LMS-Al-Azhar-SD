@@ -19,9 +19,24 @@ class TahfidzProgress extends Model
         'total_ayat',
         'progress_percent',
         'target_deskripsi',
+        'tingkat_ummi',
+        'posisi_tilawah',
+        'hafalan_terakhir',
+        'kelancaran',
+        'tajwid',
+        'makhroj',
+        'adab',
+        'predikat',
+        'target_berikutnya',
+        'tanggal_pertemuan_berikutnya',
         'status',
         'catatan',
         'updated_by',
+    ];
+
+    protected $casts = [
+        'progress_percent' => 'decimal:2',
+        'tanggal_pertemuan_berikutnya' => 'date',
     ];
 
     public function siswa()

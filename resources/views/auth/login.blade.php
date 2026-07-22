@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <!-- Google Fonts Embed for Fredoka, Patrick Hand, and Plus Jakarta Sans -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -7,7 +7,7 @@
         rel="stylesheet">
 
     <style>
-        /* Base styles */
+
         html,
         body {
             margin: 0 !important;
@@ -16,7 +16,7 @@
             overflow: hidden !important;
         }
 
-        /* Desktop input field base styling */
+
         .uni-input-group {
             position: relative;
             margin-bottom: 20px;
@@ -62,7 +62,7 @@
             transform: translateY(-1px);
         }
 
-        /* Dynamic Floating Label Logic */
+
         .uni-input-field:focus~.uni-label,
         .uni-input-field:not(:placeholder-shown)~.uni-label {
             top: -9px;
@@ -74,7 +74,7 @@
             color: #FF7A60;
         }
 
-        /* Red Border on Input Error */
+
         .uni-input-field.input-error {
             border-color: #ef4444 !important;
             background: #fffef2 !important;
@@ -88,7 +88,7 @@
             color: #ef4444 !important;
         }
 
-        /* Interactive helper tip badge */
+
         .tester-tip-badge {
             background: rgba(38, 186, 155, 0.08);
             border: 1px dashed rgba(38, 186, 155, 0.3);
@@ -106,7 +106,7 @@
             line-height: 1.4;
         }
 
-        /* Header block styling */
+
         .uni-header-block {
             display: flex;
             align-items: center;
@@ -251,7 +251,7 @@
             }
         }
 
-        /* Premium Buttons UX style */
+
         .uni-submit-btn {
             width: 100%;
             padding: 13px;
@@ -334,7 +334,7 @@
             transform: translateY(0);
         }
 
-        /* Custom Coral Checkbox UI */
+
         .uni-checkbox-container {
             display: flex;
             align-items: center;
@@ -394,7 +394,7 @@
             transform: rotate(45deg);
         }
 
-        /* SPA Form transition animation */
+
         .form-fade-container {
             position: relative;
             width: 100%;
@@ -405,7 +405,7 @@
             width: 100%;
         }
 
-        /* Mobile & Tablet Responsive Override */
+
         @media (max-width: 1024px) {
 
             html,
@@ -560,7 +560,7 @@
                 font-size: 15px !important;
             }
 
-            /* Underline Inputs style for mobile view */
+
             .uni-input-group {
                 margin-bottom: 8px !important;
             }
@@ -646,7 +646,7 @@
     </style>
 
     <div class="uni-login-page" style="overflow: hidden; height: 100vh; max-height: 100vh; position: relative;">
-        <!-- Background Curve SVG -->
+
         <div class="uni-bg-curve"
             style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;">
             <svg id="visual" viewBox="0 0 900 600" width="100%" height="100%" preserveAspectRatio="none"
@@ -658,10 +658,10 @@
             </svg>
         </div>
 
-        <!-- Main Split Container -->
+
         <div class="uni-container"
             style="font-family: 'Plus Jakarta Sans', sans-serif; height: 100vh; display: flex; align-items: center;">
-            <!-- Left Section: Green area -->
+
             <div class="uni-left"
                 style="flex: 1.4; display: flex; align-items: center; justify-content: flex-start; padding-left: 10px; height: 100%; z-index: 5;">
                 <div class="principal-feature">
@@ -676,13 +676,13 @@
                 </div>
             </div>
 
-            <!-- Right Section: White area -->
+
             <div class="uni-right"
                 style="flex: 0.6; display: flex; align-items: center; justify-content: flex-end; padding-right: 40px; z-index: 5;">
                 <div class="uni-form-wrapper"
                     style="width: 100%; max-width: 350px; display: flex; flex-direction: column; margin-top: 100px;">
 
-                    <!-- Header Teks & Logo Row -->
+
                     <div class="uni-header-block">
                         <div class="uni-header-text" style="text-align: left; line-height: 1.1; flex: 1;">
                             <div class="uni-header-title">Welcome</div>
@@ -695,9 +695,9 @@
 
                     <div class="form-fade-container">
 
-                        <!-- LOGIN VIEW -->
+
                         <div id="login-view" class="form-view active-view">
-                            <!-- Quick Testing Tip Badge -->
+
                             <div class="tester-tip-badge">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="2" stroke="currentColor"
@@ -718,7 +718,7 @@
                             <form method="POST" action="{{ route('login') }}" id="login-form">
                                 @csrf
 
-                                <!-- Email Input -->
+
                                 <div class="uni-input-group">
                                     <input type="email" id="email" name="email" placeholder=" "
                                         value="{{ old('email') }}" required autofocus
@@ -732,7 +732,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- Password Input -->
+
                                 <div class="uni-input-group" style="position: relative;">
                                     <input id="password" type="password" name="password" placeholder=" " required
                                         class="uni-input-field @error('password') input-error @enderror">
@@ -753,7 +753,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- Remember Me & Recovery Password Row -->
+
                                 <div class="uni-remember-row"
                                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                                     <label class="uni-checkbox-container">
@@ -768,7 +768,7 @@
                                     @endif
                                 </div>
 
-                                <!-- Role Selector (2x2 Grid) -->
+
                                 <div class="uni-role-selector" style="margin-bottom: 20px;">
                                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
                                         <button type="button" onclick="selectRole('admin')" id="role-admin"
@@ -792,12 +792,12 @@
                                     <input type="hidden" name="role" id="selected-role" value="siswa">
                                 </div>
 
-                                <!-- Login Button -->
+
                                 <button type="submit" id="login-submit-btn" class="uni-submit-btn">
                                     Login
                                 </button>
 
-                                <!-- Google Sign In Button -->
+
                                 <button type="button" class="uni-google-btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
                                         style="width: 18px; height: 18px;">
@@ -814,7 +814,7 @@
                                 </button>
                             </form>
 
-                            <!-- Footer Link -->
+
                             <div class="uni-footer-link" style="text-align: center; font-size: 13px; color: #94a3b8;">
                                 Don't have an account yet? <a href="{{ route('register') }}"
                                     onclick="toggleAuthPage(event, 'register')"
@@ -823,12 +823,12 @@
                             </div>
                         </div>
 
-                        <!-- REGISTER VIEW -->
+
                         <div id="register-view" class="form-view" style="display: none; opacity: 0;">
                             <form method="POST" action="{{ route('register') }}" id="register-form">
                                 @csrf
 
-                                <!-- Name Input -->
+
                                 <div class="uni-input-group">
                                     <input type="text" id="name" name="name" placeholder=" "
                                         value="{{ old('name') }}" required
@@ -842,7 +842,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- Email Input -->
+
                                 <div class="uni-input-group">
                                     <input type="email" id="register_email" name="email" placeholder=" "
                                         value="{{ old('email') }}" required
@@ -856,7 +856,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- Password Input -->
+
                                 <div class="uni-input-group" style="position: relative;">
                                     <input id="register_password" type="password" name="password" placeholder=" "
                                         required class="uni-input-field @error('password') input-error @enderror">
@@ -878,7 +878,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- Confirm Password Input -->
+
                                 <div class="uni-input-group" style="position: relative;">
                                     <input id="password_confirmation" type="password" name="password_confirmation"
                                         placeholder=" " required class="uni-input-field">
@@ -896,13 +896,13 @@
                                     </button>
                                 </div>
 
-                                <!-- Register Button -->
+
                                 <button type="submit" id="register-submit-btn" class="uni-submit-btn"
                                     style="margin-top: 8px;">
                                     Register
                                 </button>
 
-                                <!-- Google Sign Up Button -->
+
                                 <button type="button" class="uni-google-btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
                                         style="width: 18px; height: 18px;">
@@ -919,7 +919,7 @@
                                 </button>
                             </form>
 
-                            <!-- Footer Link -->
+
                             <div class="uni-footer-link"
                                 style="text-align: center; font-size: 13px; color: #94a3b8; margin-bottom: 20px;">
                                 Already registered? <a href="{{ route('login') }}"
@@ -935,9 +935,9 @@
         </div>
     </div>
 
-    <!-- Auth switching, visibility toggles & UX logic -->
+
     <script>
-        // Password visibility toggle
+
         function togglePasswordVisibility(inputId, iconId) {
             const input = document.getElementById(inputId);
             const eyeIcon = document.getElementById(iconId);
@@ -955,7 +955,7 @@
             }
         }
 
-        // Select demo role
+
         function selectRole(role) {
             document.getElementById('selected-role').value = role;
             const roles = ['admin', 'kepala_sekolah', 'guru', 'siswa'];
@@ -975,7 +975,7 @@
             });
         }
 
-        // SPA Page Switcher Logic
+
         function toggleAuthPage(event, viewName) {
             if (event) event.preventDefault();
 
@@ -983,11 +983,11 @@
             const registerView = document.getElementById('register-view');
             const subtitle = document.getElementById('uni-subtitle');
 
-            // Update browser URL instantly
+
             const newPath = viewName === 'register' ? '/register' : '/login';
             window.history.pushState({}, '', newPath);
 
-            // Transition out/in
+
             if (viewName === 'register') {
                 subtitle.style.opacity = '0';
                 loginView.style.opacity = '0';
@@ -1019,7 +1019,7 @@
             }
         }
 
-        // Double submit prevention
+
         document.getElementById('login-form').addEventListener('submit', function() {
             const submitBtn = document.getElementById('login-submit-btn');
             submitBtn.disabled = true;
@@ -1034,19 +1034,19 @@
             submitBtn.innerText = 'Registering...';
         });
 
-        // Initialize based on URL path
+
         window.addEventListener('DOMContentLoaded', () => {
             const path = window.location.pathname;
             if (path.includes('register')) {
                 toggleAuthPage(null, 'register');
             } else {
                 toggleAuthPage(null, 'login');
-                // Select default role 'siswa' for login autofill
+
                 selectRole('siswa');
             }
         });
 
-        // Listen for browser Back/Forward navigation
+
         window.addEventListener('popstate', () => {
             const path = window.location.pathname;
             if (path.includes('register')) {

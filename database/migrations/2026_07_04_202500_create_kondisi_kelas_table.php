@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
+
+
     public function up(): void
     {
         Schema::create('kondisi_kelas', function (Blueprint $table) {
@@ -21,14 +21,14 @@ return new class extends Migration
             $table->date('tanggal');
             $table->timestamps();
 
-            // Limit submission to once per student per day
+
             $table->unique(['siswa_id', 'tanggal'], 'siswa_tanggal_unique');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
+
+
     public function down(): void
     {
         Schema::dropIfExists('kondisi_kelas');

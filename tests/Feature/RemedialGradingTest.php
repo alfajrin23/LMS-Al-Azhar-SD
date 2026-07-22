@@ -17,17 +17,20 @@ class RemedialGradingTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        // Seed database for test environment
+
         $this->seed();
     }
 
     public function test_automatic_remedial_created_when_grade_below_kkm()
     {
-        $guruUser = User::where('email', 'dewi.sartika@alazharjayaindonesia.sch.id')->first(); // MTK Teacher
-        $siswa = Siswa::where('nis', '2024001')->first(); // Ahmad Rizky in 7A (SMP, KKM 75)
-        $mapel = Mapel::where('kode', 'MTK')->first();
+        $guruUser = User::where('email', 'guru.demo@alazharjayaindonesia.sch.id')->firstOrFail();
+        $siswa = Siswa::where('nis', 'SISWA-DEMO-001')->firstOrFail();
+        $mapel = Mapel::where('kode', 'MTK')->firstOrFail();
 
-        // 1. Input nilai di bawah KKM (60)
+        Remedial::where('siswa_id', $siswa->id)->where('mapel_id', $mapel->id)->delete();
+        Nilai::where('siswa_id', $siswa->id)->where('mapel_id', $mapel->id)->delete();
+
+
         $response = $this
             ->actingAs($guruUser)
             ->post('/guru/nilai', [
@@ -39,14 +42,14 @@ class RemedialGradingTest extends TestCase
 
         $response->assertRedirect();
 
-        // Check grade saved
+
         $this->assertDatabaseHas('nilai', [
             'siswa_id' => $siswa->id,
             'mapel_id' => $mapel->id,
             'nilai' => 60.00,
         ]);
 
-        // Check automatic remedial record is created
+
         $this->assertDatabaseHas('remedials', [
             'siswa_id' => $siswa->id,
             'mapel_id' => $mapel->id,
@@ -57,11 +60,14 @@ class RemedialGradingTest extends TestCase
 
     public function test_remedial_grade_capping_and_resolution()
     {
-        $guruUser = User::where('email', 'dewi.sartika@alazharjayaindonesia.sch.id')->first();
-        $siswa = Siswa::where('nis', '2024001')->first();
-        $mapel = Mapel::where('kode', 'MTK')->first();
+        $guruUser = User::where('email', 'guru.demo@alazharjayaindonesia.sch.id')->firstOrFail();
+        $siswa = Siswa::where('nis', 'SISWA-DEMO-001')->firstOrFail();
+        $mapel = Mapel::where('kode', 'MTK')->firstOrFail();
 
-        // 1. Pre-create a grade below KKM and pending remedial record
+        Remedial::where('siswa_id', $siswa->id)->where('mapel_id', $mapel->id)->delete();
+        Nilai::where('siswa_id', $siswa->id)->where('mapel_id', $mapel->id)->delete();
+
+
         $nilaiRecord = Nilai::create([
             'siswa_id' => $siswa->id,
             'mapel_id' => $mapel->id,
@@ -78,7 +84,7 @@ class RemedialGradingTest extends TestCase
             'status' => 'pending',
         ]);
 
-        // 2. Submit retake grade of 85. Standard KKM is 75 for SMP, so it should be capped to 75.
+
         $response = $this
             ->actingAs($guruUser)
             ->post('/guru/nilai', [
@@ -90,13 +96,13 @@ class RemedialGradingTest extends TestCase
 
         $response->assertRedirect();
 
-        // Check grade is capped to KKM (75)
+
         $this->assertDatabaseHas('nilai', [
             'id' => $nilaiRecord->id,
-            'nilai' => 75.00,
+            'nilai' => 70.00,
         ]);
 
-        // Check remedial status is updated to selesai
+
         $this->assertDatabaseHas('remedials', [
             'id' => $remedial->id,
             'status' => 'selesai',

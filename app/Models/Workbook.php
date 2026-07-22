@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Workbook extends Model
 {
     protected $fillable = [
-        'judul', 'deskripsi', 'mapel_id', 'kelas_id', 'guru_id', 'tipe'
+        'judul', 'deskripsi', 'mapel_id', 'kelas_id', 'guru_id', 'tipe',
+        'tahun_ajaran', 'semester'
     ];
 
     public function mapel()

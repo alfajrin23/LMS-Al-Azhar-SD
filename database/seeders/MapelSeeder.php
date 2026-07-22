@@ -32,8 +32,8 @@ class MapelSeeder extends Seeder
             ['nama' => 'Dzuhur Time', 'kode' => 'DZH'],
             ['nama' => 'Ashar Time', 'kode' => 'ASHR_SMP'],
             ['nama' => 'Upacara / Flash', 'kode' => 'UPCR_SMP'],
-            
-            // Mapel Khusus SD
+
+
             ['nama' => 'Dhuha Time', 'kode' => 'DHUHA'],
             ['nama' => 'Upacara / Pentas Seni', 'kode' => 'UPCR'],
             ['nama' => 'Qailullah', 'kode' => 'QAIL'],

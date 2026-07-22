@@ -8,23 +8,32 @@ use App\Models\Mapel;
 use App\Models\Nilai;
 use App\Models\BandingNilai;
 use App\Models\Guru;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BilingualAppealTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+    }
+
     public function test_siswa_can_submit_appeal()
     {
-        $siswaUser = User::where('email', 'ahmad.rizky@alazharjayaindonesia.sch.id')->first();
-        $siswa = Siswa::where('user_id', $siswaUser->id)->first();
-        $mapel = Mapel::where('kode', 'MTK')->first();
+        $siswaUser = User::where('email', 'siswa.demo@alazharjayaindonesia.sch.id')->firstOrFail();
+        $siswa = Siswa::where('user_id', $siswaUser->id)->firstOrFail();
+        $mapel = Mapel::where('kode', 'MTK')->firstOrFail();
 
-        // Create a grade with bilingual component
+
         $nilai = Nilai::updateOrCreate(
             ['siswa_id' => $siswa->id, 'mapel_id' => $mapel->id, 'jenis_nilai' => 'unggulan'],
             ['nilai' => 85.00, 'nilai_bahasa' => 70.00]
         );
 
-        // Delete any existing banding record
+
         BandingNilai::where('nilai_id', $nilai->id)->delete();
 
         $response = $this
@@ -45,10 +54,10 @@ class BilingualAppealTest extends TestCase
 
     public function test_guru_can_approve_appeal_and_update_grade()
     {
-        $siswaUser = User::where('email', 'ahmad.rizky@alazharjayaindonesia.sch.id')->first();
-        $siswa = Siswa::where('user_id', $siswaUser->id)->first();
-        $mapel = Mapel::where('kode', 'MTK')->first();
-        $guruUser = User::where('email', 'dewi.sartika@alazharjayaindonesia.sch.id')->first(); // MTK Teacher
+        $siswaUser = User::where('email', 'siswa.demo@alazharjayaindonesia.sch.id')->firstOrFail();
+        $siswa = Siswa::where('user_id', $siswaUser->id)->firstOrFail();
+        $mapel = Mapel::where('kode', 'MTK')->firstOrFail();
+        $guruUser = User::where('email', 'guru.demo@alazharjayaindonesia.sch.id')->firstOrFail();
 
         $nilai = Nilai::updateOrCreate(
             ['siswa_id' => $siswa->id, 'mapel_id' => $mapel->id, 'jenis_nilai' => 'unggulan'],
@@ -86,10 +95,13 @@ class BilingualAppealTest extends TestCase
 
     public function test_other_guru_cannot_process_appeal()
     {
-        $siswaUser = User::where('email', 'ahmad.rizky@alazharjayaindonesia.sch.id')->first();
-        $siswa = Siswa::where('user_id', $siswaUser->id)->first();
-        $mapel = Mapel::where('kode', 'MTK')->first();
-        $otherGuruUser = User::where('email', 'linda.wijaya@alazharjayaindonesia.sch.id')->first(); // ING Teacher (not MTK)
+        $siswaUser = User::where('email', 'siswa.demo@alazharjayaindonesia.sch.id')->firstOrFail();
+        $siswa = Siswa::where('user_id', $siswaUser->id)->firstOrFail();
+        $mapel = Mapel::where('kode', 'MTK')->firstOrFail();
+        $otherGuruUser = Guru::whereDoesntHave('jadwal', fn ($query) => $query->where('kelas_id', $siswa->kelas_id))
+            ->with('user')
+            ->firstOrFail()
+            ->user;
 
         $nilai = Nilai::updateOrCreate(
             ['siswa_id' => $siswa->id, 'mapel_id' => $mapel->id, 'jenis_nilai' => 'unggulan'],

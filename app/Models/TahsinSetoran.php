@@ -16,6 +16,8 @@ class TahsinSetoran extends Model
         'nilai',
         'catatan',
         'status',
+        'tahun_ajaran',
+        'semester',
     ];
 
     protected $casts = [

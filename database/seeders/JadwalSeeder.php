@@ -12,9 +12,9 @@ class JadwalSeeder extends Seeder
 {
     public function run(): void
     {
-        // === FORMAT PENGISIAN JADWAL PER KELAS ===
-        // Silakan isi array di bawah ini sesuai jadwal asli sekolah.
-        
+
+
+
         $jadwalPerKelasSd = [
             'Abu Bakar Ar Razi' => [
                 'Senin' => [
@@ -1128,7 +1128,7 @@ class JadwalSeeder extends Seeder
             ],
         ];
 
-        // === LOGIKA SISTEM (JANGAN DIUBAH) ===
+
         $semuaJadwal = ($jadwalPerKelasSmp ?? []) + ($jadwalPerKelasSd ?? []);
         foreach ($semuaJadwal as $kodeKelas => $hariMap) {
             $kelas = Kelas::query()->where('nama_kelas', $kodeKelas)->orWhere('kode_kelas', $kodeKelas)->first();
@@ -1153,7 +1153,7 @@ class JadwalSeeder extends Seeder
                                 ]
                             );
                         } else {
-                            // Mencetak peringatan ke terminal jika mapel atau guru tidak cocok/typo
+
                             $missing = [];
                             if (!$mapel) $missing[] = "Mapel '{$item['mapel']}'";
                             if (!$guru) $missing[] = "Guru '{$item['guru']}'";

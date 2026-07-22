@@ -38,6 +38,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/guru/nilai', [GuruNilaiController::class, 'store'])->name('guru.nilai.store');
         Route::post('/guru/kti', [\App\Http\Controllers\GuruKtiController::class, 'store'])->name('guru.kti.store');
         Route::post('/guru/laporan', [\App\Http\Controllers\GuruLaporanController::class, 'store'])->name('guru.laporan.store');
+        Route::post('/guru/jurnal-mengajar/harian', [\App\Http\Controllers\GuruLaporanController::class, 'storeHarian'])->name('guru.jurnal.harian.store');
+        Route::post('/guru/jurnal-mengajar/sikap', [\App\Http\Controllers\GuruLaporanController::class, 'storeSikap'])->name('guru.jurnal.sikap.store');
+        Route::post('/guru/jurnal-mengajar/pengayaan', [\App\Http\Controllers\GuruLaporanController::class, 'storePengayaan'])->name('guru.jurnal.pengayaan.store');
+        Route::post('/guru/jurnal-mengajar/remedial', [\App\Http\Controllers\GuruLaporanController::class, 'storeRemedial'])->name('guru.jurnal.remedial.store');
+        Route::post('/guru/jurnal-mengajar/administrasi', [\App\Http\Controllers\GuruLaporanController::class, 'storeAdministrasi'])->name('guru.jurnal.administrasi.store');
         Route::post('/guru/absensi', [GuruAbsensiController::class, 'store'])->name('guru.absensi.store');
         Route::post('/guru/catatan', [GuruCatatanController::class, 'store'])->name('guru.catatan.store');
         Route::get('/guru/export/nilai', [\App\Http\Controllers\ExportController::class, 'nilaiCsv'])->name('guru.export.nilai');
@@ -45,8 +50,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/guru/workbook/{workbook}/soal', [\App\Http\Controllers\GuruWorkbookController::class, 'storeSoal'])->name('guru.workbook.soal');
         Route::post('/guru/materi', [\App\Http\Controllers\GuruMateriController::class, 'store'])->name('guru.materi.store');
         Route::post('/guru/materi/{materi}/update', [\App\Http\Controllers\GuruMateriController::class, 'update'])->name('guru.materi.update');
+        Route::post('/guru/materi/{materi}/request-approval', [\App\Http\Controllers\GuruMateriController::class, 'requestApproval'])->name('guru.materi.request-approval');
+        Route::post('/guru/materi/{materi}/cancel-approval', [\App\Http\Controllers\GuruMateriController::class, 'cancelApproval'])->name('guru.materi.cancel-approval');
         Route::post('/guru/materi/{materi}/delete', [\App\Http\Controllers\GuruMateriController::class, 'destroy'])->name('guru.materi.delete');
         Route::post('/guru/pengumuman', [\App\Http\Controllers\GuruPengumumanController::class, 'store'])->name('guru.pengumuman.store');
+        Route::post('/guru/pesan', [\App\Http\Controllers\GuruPesanController::class, 'store'])->name('guru.pesan.store');
         Route::post('/guru/kelas', [\App\Http\Controllers\GuruKelasController::class, 'store'])->name('guru.kelas.store');
         Route::get('/guru/kelas/siswa/{id}/detail', [\App\Http\Controllers\GuruKelasController::class, 'getSiswaDetail'])->name('guru.siswa.detail');
         Route::post('/guru/nilai-tugas', [\App\Http\Controllers\NilaiTugasController::class, 'store'])->name('guru.nilai-tugas.store');
@@ -114,6 +122,12 @@ Route::middleware('auth')->group(function () {
         Route::put('/admin/kelas/{kelas}', [DashboardController::class, 'updateKelas'])->name('admin.kelas.update');
     });
 
+    Route::middleware('role:kepala_sekolah')->group(function () {
+        Route::post('/kepala-sekolah/materi/{materi}/approve', [\App\Http\Controllers\GuruMateriController::class, 'approve'])->name('kepala.materi.approve');
+        Route::post('/kepala-sekolah/materi/{materi}/reject', [\App\Http\Controllers\GuruMateriController::class, 'reject'])->name('kepala.materi.reject');
+        Route::post('/kepala-sekolah/materi/{materi}/request-revision', [\App\Http\Controllers\GuruMateriController::class, 'requestRevision'])->name('kepala.materi.request-revision');
+    });
+
     Route::middleware('role:orang_tua')->group(function () {
         Route::post('/ortu/bayar', [\App\Http\Controllers\OrtuBayarController::class, 'store'])->name('ortu.bayar.store');
         Route::post('/ortu/pesan', [\App\Http\Controllers\OrtuPesanController::class, 'store'])->name('ortu.pesan.store');
@@ -121,12 +135,20 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/materi/{materi}/download', [\App\Http\Controllers\GuruMateriController::class, 'download'])->name('materi.download');
     Route::get('/rapor/pdf', [\App\Http\Controllers\RaporController::class, 'pdf'])
-        ->middleware('role:siswa_sd,siswa_smp,orang_tua')->name('rapor.pdf');
+        ->middleware('role:siswa_sd,siswa_smp,orang_tua,guru,kepala_sekolah,admin')->name('rapor.pdf');
+    Route::get('/rapor/{jenis}/pdf', [\App\Http\Controllers\RaporController::class, 'pdf'])
+        ->middleware('role:siswa_sd,siswa_smp,orang_tua,guru,kepala_sekolah,admin')
+        ->whereIn('jenis', ['akademik', 'english', 'quran'])
+        ->name('rapor.jenis.pdf');
+    Route::get('/rapor/{jenis}', [\App\Http\Controllers\RaporController::class, 'show'])
+        ->middleware('role:siswa_sd,siswa_smp,orang_tua,guru,kepala_sekolah,admin')
+        ->whereIn('jenis', ['akademik', 'english', 'quran'])
+        ->name('rapor.show');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Search
+
     Route::get('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('search');
 });
 

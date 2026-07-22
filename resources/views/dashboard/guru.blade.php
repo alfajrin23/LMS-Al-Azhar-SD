@@ -31,7 +31,7 @@
         <label><i class="fas fa-heartbeat"></i> Kondisi Kelas</label>
     </li>
     <li :class="{'active': tab === 'materi'}" @click="tab = 'materi'">
-        <label><i class="fas fa-folder-open"></i> Upload Materi</label>
+        <label><i class="fas fa-folder-open"></i> Bahan Ajar</label>
     </li>
     <li :class="{'active': tab === 'workbook'}" @click="tab = 'workbook'">
         <label><i class="fas fa-book"></i> Workbook</label>
@@ -55,7 +55,7 @@
         <label><i class="fas fa-file-signature"></i> Karya Ilmiah (KTI)</label>
     </li>
     <li :class="{'active': tab === 'laporan_mengajar'}" @click="tab = 'laporan_mengajar'">
-        <label><i class="fas fa-clipboard-list"></i> Laporan Mengajar</label>
+        <label><i class="fas fa-clipboard-list"></i> Jurnal Mengajar</label>
     </li>
 @endsection
 

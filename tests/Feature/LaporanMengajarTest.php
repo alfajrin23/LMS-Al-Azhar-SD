@@ -41,7 +41,7 @@ class LaporanMengajarTest extends TestCase
             ]
         ];
 
-        // 1. Submit daily report
+
         $response1 = $this
             ->actingAs($guruUser)
             ->post('/guru/laporan', [
@@ -67,7 +67,7 @@ class LaporanMengajarTest extends TestCase
         $isiHarian2 = $isiHarian1;
         $isiHarian2['kendala'][0]['deskripsi'] = 'Proyektor mati di kelas 9A dan ada 2 siswa izin.';
 
-        // 2. Update the same daily report (same date and type)
+
         $response2 = $this
             ->actingAs($guruUser)
             ->post('/guru/laporan', [
@@ -77,16 +77,16 @@ class LaporanMengajarTest extends TestCase
             ]);
 
         $response2->assertRedirect();
-        // Assert it was updated, not duplicated
+
         $this->assertEquals(1, LaporanMengajar::query()->where('guru_id', $guru->id)->where('tipe', 'harian')->count());
-        
+
         $updatedReport = LaporanMengajar::query()->where('guru_id', $guru->id)
             ->where('tipe', 'harian')
             ->whereDate('tanggal', '2026-07-04')
             ->first();
         $this->assertEquals('Proyektor mati di kelas 9A dan ada 2 siswa izin.', $updatedReport->isi['kendala'][0]['deskripsi']);
 
-        // 3. Submit weekly and monthly reports
+
         $isiMingguan = [
             'rekap_pembelajaran' => [
                 ['hari' => 'Senin', 'materi' => 'Menyelesaikan Bab 3 SPLDV', 'kehadiran' => '95%', 'ketuntasan' => '75%', 'hots' => 'Cukup', 'catatan' => 'Lancar']
@@ -132,7 +132,7 @@ class LaporanMengajarTest extends TestCase
     {
         $adminUser = User::query()->where('role', 'admin')->first();
 
-        // Access dashboard as admin
+
         $response = $this
             ->actingAs($adminUser)
             ->get('/dashboard?tab=audit_guru');

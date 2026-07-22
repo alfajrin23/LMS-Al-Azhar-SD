@@ -16,7 +16,7 @@ class GuruKehadiranController extends Controller
 
         $guru = Guru::where('user_id', $request->user()->id)->firstOrFail();
         $tanggal = now()->format('Y-m-d');
-        
+
         $kehadiran = KehadiranGuru::firstOrCreate(
             ['guru_id' => $guru->id, 'tanggal' => $tanggal],
             ['status' => 'belum_absen']

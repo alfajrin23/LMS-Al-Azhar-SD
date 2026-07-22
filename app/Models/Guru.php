@@ -71,4 +71,29 @@ class Guru extends Model
     {
         return $this->hasMany(CatatanWali::class, 'created_by');
     }
+
+    public function materi()
+    {
+        return $this->hasMany(Materi::class);
+    }
+
+    public function jurnalSikap()
+    {
+        return $this->hasMany(JurnalSikap::class);
+    }
+
+    public function programPengayaan()
+    {
+        return $this->hasMany(ProgramPengayaan::class);
+    }
+
+    public function programRemedial()
+    {
+        return $this->hasMany(ProgramRemedial::class);
+    }
+
+    public function administrasiChecklists()
+    {
+        return $this->hasMany(AdministrasiGuruChecklist::class);
+    }
 }

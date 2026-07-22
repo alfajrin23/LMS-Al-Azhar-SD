@@ -23,7 +23,7 @@ class SiswaKtiController extends Controller
 
         $siswa = Siswa::where('user_id', $request->user()->id)->firstOrFail();
 
-        // Cari atau buat record NilaiKti
+
         $kti = NilaiKti::firstOrCreate(
             ['siswa_id' => $siswa->id],
             [
@@ -36,12 +36,12 @@ class SiswaKtiController extends Controller
             ]
         );
 
-        // Pastikan mengunggah sesuai bab aktif saat ini
+
         if ($kti->current_bab !== $data['bab']) {
             return redirect()->back()->with('error', 'Anda hanya bisa mengunggah draf untuk ' . $kti->current_bab . ' saat ini.');
         }
 
-        // Cek jika ada pengajuan pending untuk bab yang sama
+
         $pending = KtiBimbingan::where('siswa_id', $siswa->id)
             ->where('bab', $data['bab'])
             ->where('status', 'pending')
@@ -51,21 +51,21 @@ class SiswaKtiController extends Controller
             return redirect()->back()->with('error', 'Draf sebelumnya untuk ' . $data['bab'] . ' masih dalam proses peninjauan guru.');
         }
 
-        // Proses upload file atau link
+
         $filePath = '';
         if ($request->hasFile('file_draft')) {
             $file = $request->file('file_draft');
             $fileName = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
-            
-            // Buat direktori jika belum ada
+
+
             if (!file_exists(public_path('uploads/drafts'))) {
                 mkdir(public_path('uploads/drafts'), 0777, true);
             }
-            
+
             $file->move(public_path('uploads/drafts'), $fileName);
             $filePath = '/uploads/drafts/' . $fileName;
         } else {
-            // Jika berupa tautan text/url (misal Google Docs)
+
             $filePath = $request->input('file_draft');
         }
 

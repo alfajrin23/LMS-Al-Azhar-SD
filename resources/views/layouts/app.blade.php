@@ -47,14 +47,14 @@
                 </button>
                 <div class="mobile-topbar-brand">
                     <strong>LMS Al Azhar Jaya</strong>
-                    <span>{{ auth()->user()->role === 'siswa_sd' ? 'SDIT' : (auth()->user()->role === 'siswa_smp' ? 'SMPIT' : 'SDIT & SMPIT') }} Al Azhar Jaya Indonesia</span>
+                    <span>SDIT Al Azhar Jaya Indonesia</span>
                 </div>
             </header>
 
             <aside class="sidebar" id="dashboardSidebar">
                 <div class="brand">
                     <h2><i class="fas fa-graduation-cap"></i>LMS Al Azhar Jaya</h2>
-                    <p>{{ auth()->user()->role === 'siswa_sd' ? 'SDIT' : (auth()->user()->role === 'siswa_smp' ? 'SMPIT' : 'SDIT & SMPIT') }} Al Azhar Jaya Indonesia</p>
+                    <p>SDIT Al Azhar Jaya Indonesia</p>
                 </div>
                 <div style="padding:0 16px 10px">
                     <form class="d-flex" style="position:relative" onsubmit="return false">
@@ -79,7 +79,7 @@
     </div>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Sidebar toggle
+
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.querySelector('.sidebar');
         const overlay = document.querySelector('.overlay');
@@ -118,7 +118,7 @@
             if (!isMobile()) closeSidebar();
         });
 
-        // Global search
+
         let searchTimeout;
         const searchInput = document.getElementById('globalSearch');
         const searchResults = document.getElementById('searchResults');

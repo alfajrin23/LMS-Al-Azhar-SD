@@ -30,14 +30,14 @@ class GuruKtiController extends Controller
             return redirect()->back()->with('error', 'Siswa tidak berada pada kelas yang Anda ampu.');
         }
 
-        // Hitung nilai akhir dengan bobot
-        $nilaiAkhir = ($data['nilai_proses'] * 0.40) + ($data['nilai_tulisan'] * 0.30) + ($data['nilai_sidang'] * 0.30);
+
+        $nilaiAkhir = ($data['nilai_proses'] * 0.30) + ($data['nilai_tulisan'] * 0.40) + ($data['nilai_sidang'] * 0.30);
 
         NilaiKti::updateOrCreate(
             ['siswa_id' => $data['siswa_id']],
             [
                 'judul_kti' => $data['judul_kti'],
-                'current_bab' => 'Selesai', // KTI telah selesai dinilai
+                'current_bab' => 'Selesai',
                 'nilai_proses' => $data['nilai_proses'],
                 'nilai_tulisan' => $data['nilai_tulisan'],
                 'nilai_sidang' => $data['nilai_sidang'],

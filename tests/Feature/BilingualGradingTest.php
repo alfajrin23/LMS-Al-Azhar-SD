@@ -6,17 +6,26 @@ use App\Models\User;
 use App\Models\Siswa;
 use App\Models\Mapel;
 use App\Models\Nilai;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BilingualGradingTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+    }
+
     public function test_guru_can_save_bilingual_grades()
     {
-        $guruUser = User::where('email', 'dewi.sartika@alazharjayaindonesia.sch.id')->first();
-        $siswa = Siswa::where('nis', '2024001')->first();
-        $mapel = Mapel::where('kode', 'MTK')->first();
+        $guruUser = User::where('email', 'guru.demo@alazharjayaindonesia.sch.id')->firstOrFail();
+        $siswa = Siswa::where('nis', 'SISWA-DEMO-001')->firstOrFail();
+        $mapel = Mapel::where('kode', 'ING')->firstOrFail();
 
-        // Hapus nilai yang ada untuk menjamin test berjalan bersih
+
         Nilai::where([
             'siswa_id' => $siswa->id,
             'mapel_id' => $mapel->id,
@@ -34,7 +43,7 @@ class BilingualGradingTest extends TestCase
             ]);
 
         $response->assertRedirect();
-        
+
         $this->assertDatabaseHas('nilai', [
             'siswa_id' => $siswa->id,
             'mapel_id' => $mapel->id,

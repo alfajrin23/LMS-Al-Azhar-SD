@@ -25,4 +25,9 @@ class Remedial extends Model
     {
         return $this->belongsTo(Nilai::class);
     }
+
+    public function programRemedial()
+    {
+        return $this->hasOne(ProgramRemedial::class);
+    }
 }

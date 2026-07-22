@@ -57,7 +57,7 @@ class GuruTugasController extends Controller
         }
 
         $path = storage_path('app/public/' . $tugas->file_path);
-        
+
         if (!file_exists($path)) {
             return abort(404, 'File tidak ditemukan.');
         }
@@ -73,7 +73,7 @@ class GuruTugasController extends Controller
         }
 
         $path = storage_path('app/public/' . $pengumpulan->file_path);
-        
+
         if (!file_exists($path)) {
             return abort(404, 'File tidak ditemukan.');
         }

@@ -6,7 +6,7 @@
     $surahBaru = $tahfidzSetoran->where('status', 'baru')->count();
     $setoranBulanIni = $tahfidzSetoran->where('tanggal', '>=', now()->startOfMonth())->count();
 
-    // Akurasi perhitungan Juz & Persentase Al-Qur'an
+
     $totalAyatBaru = $tahfidzSetoran->where('status', 'baru')->sum('jumlah_ayat');
     $juzDihafal = min(30, floor($totalAyatBaru / 208));
     $juzSaatIni = min(30, $juzDihafal + 1);
@@ -121,7 +121,7 @@
         <div class="tahfidz-stat"><span class="tahfidz-stat-number orange">{{ $surahBaru }}</span><span class="tahfidz-stat-label">Surah Baru</span></div>
     </div>
 
-    <!-- Progress Bar Section -->
+
     <div style="margin: 20px 0 15px 0; padding-top: 15px; border-top: 1px solid var(--border-light)">
         <div style="display:flex; justify-content:space-between; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--gray-500)">
             <span>Progress Hafalan Al-Qur'an: <strong>{{ $percentHafalan }}%</strong>
@@ -136,7 +136,7 @@
         </div>
     </div>
 
-    <!-- 30 Juz Grid Section -->
+
     <div style="margin-top: 20px;">
         <h4 style="font-size:13px; color:var(--gray-500); margin-bottom:12px; font-weight:600"><i class="fas fa-th" style="margin-right:6px"></i> Peta Hafalan 30 Juz</h4>
         <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: 8px;">

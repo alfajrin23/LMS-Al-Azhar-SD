@@ -59,7 +59,7 @@ class GuruCbtController extends Controller
             return redirect()->back()->withInput()->with('error', 'Kelas atau mapel tidak sesuai dengan jadwal mengajar Anda.');
         }
 
-        // If generating automatically, check if there are any questions in the pool first
+
         if ($request->has('generate_otomatis')) {
             $poolCount = CbtSoal::whereHas('exam', function($q) use ($data) {
                 $q->where('mapel_id', $data['mapel_id']);
@@ -69,7 +69,7 @@ class GuruCbtController extends Controller
                 return redirect()->back()->withInput()->with('error', 'Belum ada bank soal untuk mata pelajaran ini. Silakan buat minimal satu soal secara manual terlebih dahulu.');
             }
 
-            // Validate total percentage
+
             $totalPersen = (int)$data['persen_mudah'] + (int)$data['persen_sedang'] + (int)$data['persen_sulit'];
             if ($totalPersen !== 100) {
                 return redirect()->back()->withInput()->with('error', 'Total persentase kesulitan harus berjumlah 100% (saat ini: ' . $totalPersen . '%).');
@@ -95,7 +95,7 @@ class GuruCbtController extends Controller
             $countSedang = (int)round($jumlahSoalGen * ((int)$data['persen_sedang'] / 100));
             $countSulit = $jumlahSoalGen - ($countMudah + $countSedang);
 
-            // Fetch based on difficulty
+
             $poolMudah = CbtSoal::whereHas('exam', function($q) use ($data) {
                 $q->where('mapel_id', $data['mapel_id']);
             })->where('kesulitan', 'mudah')->inRandomOrder()->limit($countMudah)->get();
@@ -111,7 +111,7 @@ class GuruCbtController extends Controller
             $selectedSoals = collect();
             $selectedSoals = $selectedSoals->concat($poolMudah)->concat($poolSedang)->concat($poolSulit);
 
-            // Fallback: If not enough questions of desired difficulties, pull any remaining questions for this mapel
+
             $needed = $jumlahSoalGen - $selectedSoals->count();
             if ($needed > 0) {
                 $excludeIds = $selectedSoals->pluck('id')->toArray();
@@ -121,7 +121,7 @@ class GuruCbtController extends Controller
                 $selectedSoals = $selectedSoals->concat($additional);
             }
 
-            // Clone selected questions to the new exam
+
             $shuffledSoals = $selectedSoals->shuffle();
             foreach ($shuffledSoals as $idx => $s) {
                 CbtSoal::create([

@@ -137,7 +137,7 @@
     </div>
 
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-        <!-- Hari Ini -->
+
         <div
             style="background: var(--gray-50); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); text-align: center;">
             <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 8px; font-weight: 600;">Hari Ini
@@ -147,7 +147,7 @@
             </div>
         </div>
 
-        <!-- Kemarin -->
+
         <div
             style="background: var(--gray-50); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); text-align: center;">
             <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 8px; font-weight: 600;">Kemarin
@@ -211,7 +211,7 @@
             @csrf
             <div
                 style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-bottom:20px">
-                <!-- Hubungan Guru-Siswa -->
+
                 <div
                     style="background:var(--gray-50); border:1px solid var(--border-light); padding:14px; border-radius:var(--radius-sm)">
                     <div
@@ -227,7 +227,7 @@
                         x-text="hubunganDesc"></div>
                 </div>
 
-                <!-- Kenyamanan -->
+
                 <div
                     style="background:var(--gray-50); border:1px solid var(--border-light); padding:14px; border-radius:var(--radius-sm)">
                     <div
@@ -243,7 +243,7 @@
                         x-text="nyamanDesc"></div>
                 </div>
 
-                <!-- Bantuan -->
+
                 <div
                     style="background:var(--gray-50); border:1px solid var(--border-light); padding:14px; border-radius:var(--radius-sm)">
                     <div
@@ -284,7 +284,7 @@
         </button>
     </div>
 
-    <!-- Modal QRIS -->
+
     <div x-show="showQris"
         style="position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999;"
         x-transition x-cloak>

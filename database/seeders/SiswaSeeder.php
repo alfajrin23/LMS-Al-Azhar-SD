@@ -12,12 +12,12 @@ use Illuminate\Support\Facades\Hash;
 
 class SiswaSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+
+
+
     public function run(): void
     {
-        // 1. Data Kelas Biasa (Reguler) untuk mapping
+
         $kelasBiasaMap = [
             'Alviandra Chesta Radityatama' => 'Abu Bakar Ar Razi',
             'Aqilah Naurah' => 'Abu Bakar Ar Razi',
@@ -87,9 +87,9 @@ class SiswaSeeder extends Seeder
             'Syakira Sausan Khairunnisa' => 'Fatimah Al Fihri'
         ];
 
-        // 2. Data Kelas Quran untuk pengelompokan utama (SD & SMP digabung)
+
         $dataSiswaQuran = [
-            // --- SMP ---
+
             'Imam Nafi bin Abdurrahman' => [
                 'jk' => 'L',
                 'role' => 'siswa_smp',
@@ -193,7 +193,7 @@ class SiswaSeeder extends Seeder
                 ]
             ],
 
-            // --- SD Ikhwan ---
+
             'Abu Ubaidah bin Al-Jarrah' => [
                 'jk' => 'L',
                 'role' => 'siswa_sd',
@@ -229,7 +229,7 @@ class SiswaSeeder extends Seeder
                 ]
             ],
 
-            // --- SD Akhwat ---
+
             'Khadijah binti Khuwailid' => [
                 'jk' => 'P',
                 'role' => 'siswa_sd',
@@ -276,7 +276,7 @@ class SiswaSeeder extends Seeder
             $kelasQuranId = $kelasQuran ? $kelasQuran->id : null;
 
             foreach ($grup['siswa'] as $namaSiswa) {
-                // 1. Buat atau Update User agar tidak double
+
                 $email = strtolower(str_replace([' ', '\''], ['.', ''], $namaSiswa)) . '@alazharjayaindonesia.sch.id';
 
                 $user = User::updateOrCreate(
@@ -284,11 +284,11 @@ class SiswaSeeder extends Seeder
                     [
                         'name' => $namaSiswa,
                         'password' => Hash::make('password123'),
-                        'role' => $grup['role'] // Dinamis berdasarkan grup (SD/SMP)
+                        'role' => $grup['role']
                     ]
                 );
 
-                // 2. Cek Kelas Biasa (jika ada)
+
                 $kelasRegulerId = null;
                 if (isset($kelasBiasaMap[$namaSiswa])) {
                     $kelasReguler = Kelas::where('nama_kelas', $kelasBiasaMap[$namaSiswa])->first();
@@ -297,13 +297,13 @@ class SiswaSeeder extends Seeder
                     }
                 }
 
-                // 3. Masukkan ke tabel Siswa menggunakan updateOrCreate berdasarkan user_id
+
                 Siswa::updateOrCreate(
                     ['user_id' => $user->id],
                     [
                         'nis' => (string) $nisCounter,
                         'nama' => $namaSiswa,
-                        'kelas_id' => $kelasRegulerId, // Hanya terisi jika ditemukan
+                        'kelas_id' => $kelasRegulerId,
                         'kelas_quran_id' => $kelasQuranId,
                         'jenis_kelamin' => $grup['jk'],
                         'status' => 'aktif'

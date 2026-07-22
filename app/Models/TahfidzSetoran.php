@@ -10,7 +10,12 @@ class TahfidzSetoran extends Model
     protected $fillable = [
         'siswa_id', 'guru_id', 'tanggal', 'tanggal_berikutnya', 'surah',
         'ayat_mulai', 'ayat_selesai', 'jumlah_ayat',
-        'status', 'nilai', 'catatan_guru'
+        'status', 'nilai', 'catatan_guru', 'tahun_ajaran', 'semester'
+    ];
+
+    protected $casts = [
+        'tanggal' => 'date',
+        'tanggal_berikutnya' => 'date',
     ];
 
     public function siswa()

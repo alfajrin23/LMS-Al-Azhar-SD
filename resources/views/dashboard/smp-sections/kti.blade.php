@@ -2,7 +2,7 @@
     $currentBab = $nilaiKti->current_bab ?? 'Bab 1';
     $isPending = $ktiBimbingans->where('bab', $currentBab)->where('status', 'pending')->first();
     $bimbinganStatus = $ktiBimbingans->where('bab', $currentBab)->first()?->status ?? 'none';
-    
+
     $steps = ['Bab 1', 'Bab 2', 'Bab 3', 'Bab 4', 'Bab 5', 'Draft Akhir', 'Siap Sidang', 'Selesai'];
     $currentStepIndex = array_search($currentBab, $steps);
     if ($currentStepIndex === false) {
@@ -79,13 +79,13 @@
     .step-label.done {
         color: #20c997;
     }
-    
+
     @keyframes pulse-node {
         0% { transform: scale(1); }
         50% { transform: scale(1.08); box-shadow: 0 0 16px rgba(255, 146, 43, 0.8); }
         100% { transform: scale(1); }
     }
-    
+
     .status-alert {
         padding: 16px;
         border-radius: 8px;
@@ -98,8 +98,8 @@
     }
 </style>
 
-<div x-data="{ 
-    fileType: 'link', 
+<div x-data="{
+    fileType: 'link',
     alasan: '',
     initCountdown(targetDate) {
         return {
@@ -130,7 +130,7 @@
         </div>
     </div>
 
-    <!-- Countdown Ujian Sidang KTI -->
+
     @if($nilaiKti && $nilaiKti->jadwal_sidang)
         @php
             $targetTime = \Carbon\Carbon::parse($nilaiKti->jadwal_sidang);
@@ -153,10 +153,10 @@
         @endif
     @endif
 
-    <!-- Stepper Progress Hafalan -->
+
     <div class="card" style="margin-bottom:20px; padding: 24px;">
         <div class="card-header" style="border-bottom:none; padding-bottom:0"><h3><i class="fas fa-project-diagram" style="color:var(--teal)"></i> Tahapan Progress Bimbingan KTI</h3></div>
-        
+
         <div class="stepper-container">
             <div class="stepper-line">
                 <div class="stepper-line-fill" style="width: {{ ($currentStepIndex / (count($steps) - 1)) * 100 }}%"></div>
@@ -182,10 +182,10 @@
     </div>
 
     <div class="grid-2">
-        <!-- Input Upload Section -->
+
         <div class="card" style="margin-bottom:20px">
             <div class="card-header"><h3><i class="fas fa-cloud-upload-alt" style="color:var(--blue)"></i> Unggah Draf Tulisan</h3></div>
-            
+
             @if($currentBab === 'Selesai')
                 <div class="status-alert" style="background:#f0fdf4; border:1px solid #bbf7d0; color:#16a34a">
                     <i class="fas fa-check-circle" style="font-size:18px"></i>
@@ -205,7 +205,7 @@
                 <form action="{{ route('siswa.kti.bimbingan') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="bab" value="{{ $currentBab }}">
-                    
+
                     <div class="form-group" style="margin-bottom:14px">
                         <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-500);margin-bottom:4px">Bab Bimbingan</label>
                         <input type="text" class="form-select" value="{{ $currentBab }} (Sedang Berjalan)" readonly style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:#f8fafc;font-weight:600">
@@ -245,7 +245,7 @@
             @endif
         </div>
 
-        <!-- Grade Display Section -->
+
         <div class="card" style="margin-bottom:20px">
             <div class="card-header"><h3><i class="fas fa-star" style="color:var(--orange)"></i> Penilaian Karya Tulis Ilmiah</h3></div>
             @if($nilaiKti && $nilaiKti->current_bab === 'Selesai')
@@ -278,7 +278,7 @@
         </div>
     </div>
 
-    <!-- Bimbingan History Section -->
+
     <div class="card">
         <div class="card-header"><h3><i class="fas fa-history" style="color:var(--purple)"></i> Riwayat Pengumpulan Draf KTI</h3></div>
         <div class="table-wrap">

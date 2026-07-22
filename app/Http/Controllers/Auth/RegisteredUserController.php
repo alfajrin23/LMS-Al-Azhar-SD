@@ -17,20 +17,20 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
+
+
+
     public function create(): View
     {
         $kelases = Kelas::all();
         return view('auth.register', compact('kelases'));
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws ValidationException
-     */
+
+
+
+
+
     public function store(Request $request): RedirectResponse
     {
         $request->validate([

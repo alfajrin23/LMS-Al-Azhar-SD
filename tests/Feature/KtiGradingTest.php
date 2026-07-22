@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Siswa;
 use App\Models\Kelas;
+use App\Models\Guru;
 use App\Models\NilaiKti;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,16 +17,15 @@ class KtiGradingTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        // Seed database for test environment
+
         $this->seed();
     }
 
     public function test_guru_can_grade_kti_specifically_for_class_9_students()
     {
-        $guruUser = User::where('role', 'guru')->first(); // A teacher
 
-        // Create a student in Class 9A
-        $kelas9 = Kelas::where('nama_kelas', '9A')->first();
+        $kelas9 = Kelas::where('kode_kelas', '9A')->firstOrFail();
+        $guruUser = $this->guruUserForKelas($kelas9);
         $userSiswa9 = User::create([
             'name' => 'Rian Hidayat',
             'email' => 'rian.hidayat@alazharjayaindonesia.sch.id',
@@ -41,21 +41,21 @@ class KtiGradingTest extends TestCase
             'status' => 'aktif'
         ]);
 
-        // 1. Submit KTI grade from Guru
+
         $response = $this
             ->actingAs($guruUser)
             ->post('/guru/kti', [
                 'siswa_id' => $siswa9->id,
                 'judul_kti' => 'Pengaruh Gadget terhadap Konsentrasi Belajar',
-                'nilai_proses' => 80.00,  // Bobot 30% -> 24.00
-                'nilai_tulisan' => 90.00, // Bobot 40% -> 36.00
-                'nilai_sidang' => 85.00,  // Bobot 30% -> 25.50
+                'nilai_proses' => 80.00,
+                'nilai_tulisan' => 90.00,
+                'nilai_sidang' => 85.00,
                 'catatan' => 'Sangat bagus, pertahankan!',
             ]);
 
         $response->assertRedirect();
 
-        // 2. Assert calculated weighted score in DB (24 + 36 + 25.5 = 85.50)
+
         $this->assertDatabaseHas('nilai_ktis', [
             'siswa_id' => $siswa9->id,
             'judul_kti' => 'Pengaruh Gadget terhadap Konsentrasi Belajar',
@@ -66,7 +66,7 @@ class KtiGradingTest extends TestCase
             'catatan' => 'Sangat bagus, pertahankan!',
         ]);
 
-        // 3. Test Student Access (Class 9 gets access)
+
         $responseSiswa9 = $this
             ->actingAs($userSiswa9)
             ->get('/dashboard');
@@ -75,8 +75,23 @@ class KtiGradingTest extends TestCase
         $responseSiswa9->assertViewHas('isKelas9', true);
         $responseSiswa9->assertViewHas('nilaiKti');
 
-        // 4. Test Student Access (Class 7 does NOT get access)
-        $userSiswa7 = User::where('email', 'ahmad.rizky@alazharjayaindonesia.sch.id')->first();
+
+        $kelas7 = Kelas::where('kode_kelas', '7')->firstOrFail();
+        $userSiswa7 = User::create([
+            'name' => 'Siswa Kelas 7 Test',
+            'email' => 'siswa.kelas7.test@alazharjayaindonesia.sch.id',
+            'password' => bcrypt('password123'),
+            'role' => 'siswa_smp'
+        ]);
+        Siswa::create([
+            'user_id' => $userSiswa7->id,
+            'nama' => 'Siswa Kelas 7 Test',
+            'nis' => '2024007',
+            'kelas_id' => $kelas7->id,
+            'jenis_kelamin' => 'L',
+            'status' => 'aktif'
+        ]);
+
         $responseSiswa7 = $this
             ->actingAs($userSiswa7)
             ->get('/dashboard');
@@ -88,7 +103,7 @@ class KtiGradingTest extends TestCase
 
     public function test_siswa_can_submit_kti_bimbingan_draft()
     {
-        $kelas9 = Kelas::where('nama_kelas', '9A')->first();
+        $kelas9 = Kelas::where('kode_kelas', '9A')->firstOrFail();
         $userSiswa9 = User::create([
             'name' => 'Rian Hidayat 2',
             'email' => 'rian.hidayat2@alazharjayaindonesia.sch.id',
@@ -123,8 +138,8 @@ class KtiGradingTest extends TestCase
 
     public function test_guru_can_approve_kti_bimbingan_draft_and_advance_bab()
     {
-        $guruUser = User::where('role', 'guru')->first();
-        $kelas9 = Kelas::where('nama_kelas', '9A')->first();
+        $kelas9 = Kelas::where('kode_kelas', '9A')->firstOrFail();
+        $guruUser = $this->guruUserForKelas($kelas9);
         $userSiswa9 = User::create([
             'name' => 'Rian Hidayat 3',
             'email' => 'rian.hidayat3@alazharjayaindonesia.sch.id',
@@ -175,5 +190,14 @@ class KtiGradingTest extends TestCase
             'siswa_id' => $siswa9->id,
             'current_bab' => 'Bab 2',
         ]);
+    }
+
+    private function guruUserForKelas(Kelas $kelas): User
+    {
+        $guru = Guru::whereHas('jadwal', fn ($query) => $query->where('kelas_id', $kelas->id))
+            ->with('user')
+            ->firstOrFail();
+
+        return $guru->user;
     }
 }

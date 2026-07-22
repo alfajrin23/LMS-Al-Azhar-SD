@@ -26,19 +26,20 @@ class MateriChecklistTest extends TestCase
 
     public function test_materi_checklist_and_approval_workflow()
     {
-        $guruUser = User::where('role', 'guru')->first();
-        $guru = Guru::where('user_id', $guruUser->id)->first();
-        $mapel = Mapel::first();
-        $kelas = Kelas::first();
+        $guruUser = User::where('email', 'guru.demo@alazharjayaindonesia.sch.id')->firstOrFail();
+        $guru = Guru::where('user_id', $guruUser->id)->firstOrFail();
+        $mapel = Mapel::where('kode', 'MTK')->firstOrFail();
+        $kelas = Kelas::where('kode_kelas', '1-DEMO')->firstOrFail();
 
-        // 1. Guru uploads incomplete material (no description, no class)
+
         $file = UploadedFile::fake()->create('modul_matematika.pdf', 100);
         $response1 = $this->actingAs($guruUser)->post('/guru/materi', [
             'judul' => 'Bab 1 Aljabar',
+            'kategori' => 'kompetensi_dasar',
             'tipe' => 'materi',
             'mapel_id' => $mapel->id,
             'kelas_id' => '',
-            'deskripsi' => '', // Empty
+            'deskripsi' => '',
             'file' => $file,
         ]);
 
@@ -46,18 +47,19 @@ class MateriChecklistTest extends TestCase
         $this->assertDatabaseHas('materi', [
             'judul' => 'Bab 1 Aljabar',
             'guru_id' => $guru->id,
-            'status' => 'draft', // Stays draft since it's incomplete
+            'status' => 'draft',
         ]);
 
         $materi = Materi::where('judul', 'Bab 1 Aljabar')->first();
 
-        // 2. Guru updates the material to meet all checklist criteria (has class & desc >= 20 chars)
+
         $response2 = $this->actingAs($guruUser)->post("/guru/materi/{$materi->id}/update", [
             'judul' => 'Bab 1 Aljabar Revision',
+            'kategori' => 'kompetensi_dasar',
             'tipe' => 'materi',
             'mapel_id' => $mapel->id,
             'kelas_id' => $kelas->id,
-            'deskripsi' => 'Deskripsi ringkasan materi aljabar linear kelas 7 yang sangat lengkap.', // >= 20 chars
+            'deskripsi' => 'Deskripsi ringkasan materi aljabar linear kelas 7 yang sangat lengkap.',
         ]);
 
         $response2->assertRedirect();
@@ -65,11 +67,18 @@ class MateriChecklistTest extends TestCase
             'id' => $materi->id,
             'judul' => 'Bab 1 Aljabar Revision',
             'kelas_id' => $kelas->id,
-            'status' => 'pending', // Becomes pending (waiting for review)
+            'status' => 'draft',
         ]);
 
-        // 3. Admin approves the material
-        $adminUser = User::where('role', 'admin')->first();
+
+        $responseRequest = $this->actingAs($guruUser)->post("/guru/materi/{$materi->id}/request-approval");
+        $responseRequest->assertRedirect();
+        $this->assertDatabaseHas('materi', [
+            'id' => $materi->id,
+            'status' => 'pending',
+        ]);
+
+        $adminUser = User::where('role', 'admin')->firstOrFail();
         $response3 = $this->actingAs($adminUser)->post("/admin/materi/{$materi->id}/approve");
 
         $response3->assertRedirect();
@@ -78,10 +87,10 @@ class MateriChecklistTest extends TestCase
             'status' => 'approved',
         ]);
 
-        // 4. Student in the same class views the mapel page and sees the approved material
-        $siswaUser = User::where('role', 'siswa')->first();
-        $siswa = Siswa::where('user_id', $siswaUser->id)->first();
-        // Set student class to match material class
+
+        $siswaUser = User::where('email', 'siswa.demo@alazharjayaindonesia.sch.id')->firstOrFail();
+        $siswa = Siswa::where('user_id', $siswaUser->id)->firstOrFail();
+
         $siswa->update(['kelas_id' => $kelas->id]);
 
         $response4 = $this->actingAs($siswaUser)->get('/dashboard?tab=mapel');

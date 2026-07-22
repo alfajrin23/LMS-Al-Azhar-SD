@@ -57,6 +57,11 @@ class Siswa extends Model
         return $this->hasMany(Nilai::class);
     }
 
+    public function rapors()
+    {
+        return $this->hasMany(Rapor::class);
+    }
+
     public function kehadiran()
     {
         return $this->hasMany(Kehadiran::class);
@@ -65,6 +70,11 @@ class Siswa extends Model
     public function catatanWali()
     {
         return $this->hasMany(CatatanWali::class);
+    }
+
+    public function jurnalSikap()
+    {
+        return $this->hasMany(JurnalSikap::class);
     }
 
     public function badges()
@@ -108,7 +118,7 @@ class Siswa extends Model
         return $this->belongsTo(KelasQuran::class);
     }
 
-    // Alias using camelCase for existing Blade views
+
     public function kelasQuran()
     {
         return $this->belongsTo(KelasQuran::class);

@@ -2,11 +2,11 @@
     $mapelList = \App\Models\Mapel::akademik()->get();
     $semuaSiswa = \App\Models\Siswa::with('kelas')->get();
 @endphp
-<div x-data="{ 
-    selectedSiswa: '', 
+<div x-data="{
+    selectedSiswa: '',
     selectedMapel: '',
-    jenisNilai: 'biasa', 
-    isBilingual: false, 
+    jenisNilai: 'biasa',
+    isBilingual: false,
     siswaList: @js($semuaSiswa),
     mapelList: @js($mapelList),
     updateBilingual() {
@@ -14,12 +14,11 @@
         const m = this.mapelList.find(x => x.id == this.selectedMapel);
         const isMathScience = m && (m.kode === 'MTK' || m.kode === 'IPA');
         const isKelasUnggulan = s && s.kelas && s.kelas.nama_kelas.endsWith('A');
-        
+
         if (s && s.kelas) {
             this.jenisNilai = isKelasUnggulan ? 'unggulan' : 'biasa';
         }
-        
-        // Auto-check bilingual if it is Math/Science in class A
+
         this.isBilingual = isMathScience && isKelasUnggulan;
     }
 }" x-init="$watch('selectedSiswa', () => updateBilingual()); $watch('selectedMapel', () => updateBilingual())">
@@ -197,7 +196,7 @@
     </div>
     @endif
 
-    <!-- Daftar Remedial Siswa Aktif -->
+
     <div class="card" style="margin-top:20px">
         <div class="card-header">
             <h3><i class="fas fa-exclamation-circle" style="color:var(--red)"></i> Daftar Remedial Siswa Aktif</h3>
@@ -247,7 +246,7 @@
         </div>
     </div>
 
-    <!-- Daftar Banding Nilai (Bilingual) -->
+
     <div class="card" style="margin-top:20px">
         <div class="card-header">
             <h3><i class="fas fa-balance-scale" style="color:var(--indigo)"></i> Pengajuan Banding Nilai Bilingual</h3>
@@ -274,7 +273,7 @@
                             <td>{{ $b->siswa->kelas->nama_kelas ?? '-' }}</td>
                             <td>{{ $b->nilai->mapel->nama_mapel }}</td>
                             <td>
-                                <span style="font-weight:700">{{ $b->nilai->nilai }}</span> 
+                                <span style="font-weight:700">{{ $b->nilai->nilai }}</span>
                                 <span style="font-size:11px;color:var(--indigo)">(Eng: {{ $b->nilai->nilai_bahasa }})</span>
                             </td>
                             <td style="max-width:250px; font-style:italic; font-size:13px; color:var(--gray-500)">"{{ $b->alasan_siswa }}"</td>

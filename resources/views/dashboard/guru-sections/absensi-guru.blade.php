@@ -52,7 +52,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="card">
         <div class="card-header">
             <h3><i class="fas fa-history" style="color:var(--blue)"></i> Riwayat Absensi (10 Hari Terakhir)</h3>

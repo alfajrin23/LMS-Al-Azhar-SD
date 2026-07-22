@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
-        
+
         :root {
             --font: 'Outfit', sans-serif;
             --text-color: #1e293b;
@@ -197,7 +197,7 @@
 </head>
 <body>
 
-    <!-- Bar Aksi (Hanya muncul di browser) -->
+
     <div class="no-print-bar">
         <div>
             <h4 style="margin:0; font-size:16px;">Pratinjau Cetak Ujian</h4>
@@ -208,7 +208,7 @@
         </button>
     </div>
 
-    <!-- Lembar Soal Ujian -->
+
     <div class="exam-paper">
         <div class="kop-surat">
             <div class="kop-logo">
@@ -216,7 +216,7 @@
             </div>
             <div class="kop-text">
                 <h2>Lembaga Pendidikan Al Azhar Jaya Indonesia</h2>
-                <p>SDIT &amp; SMPIT Al Azhar Jaya Indonesia &bull; Akreditasi A &bull; Sistem Informasi Akademik</p>
+                <p>SDIT Al Azhar Jaya Indonesia &bull; Akreditasi A &bull; Sistem Informasi Akademik</p>
             </div>
         </div>
 
@@ -261,7 +261,7 @@
                     <span style="font-weight:700;">{{ $s->nomor }}.</span>
                     <span style="flex:1;">{!! nl2br(e($s->soal)) !!}</span>
                 </div>
-                
+
                 @if($s->tipe === 'pg')
                 <div class="options-grid">
                     <div class="option-item">A. {{ $s->pilihan_a }}</div>
@@ -277,12 +277,12 @@
         </div>
     </div>
 
-    <!-- Lembar Kunci Jawaban (Untuk Guru) -->
+
     <div class="key-paper">
         <h3 style="text-align:center; text-transform:uppercase; margin-bottom:25px; font-size:15px; font-weight:700; border-bottom:2px solid #000; padding-bottom:10px;">
             Lembar Kunci Jawaban &bull; Khusus Guru
         </h3>
-        
+
         <div style="margin-bottom:20px; font-size:13px;">
             <strong>Nama Ujian:</strong> {{ $cbtExam->judul }}<br>
             <strong>Mata Pelajaran:</strong> {{ $cbtExam->mapel->nama_mapel ?? '—' }}

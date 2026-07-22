@@ -416,7 +416,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="card" x-show="jenisKelas === 'quran'">
                 <div class="table-wrap">
                     <table>

@@ -27,6 +27,9 @@
     <li :class="{ 'active': tab === 'audit_guru' }" @click="tab = 'audit_guru'">
         <label><i class="fas fa-clipboard-check"></i> Audit &amp; Kinerja Guru</label>
     </li>
+    <li :class="{ 'active': tab === 'bahan_ajar_approval' }" @click="tab = 'bahan_ajar_approval'">
+        <label><i class="fas fa-folder-open"></i> Approval Bahan Ajar</label>
+    </li>
     <li :class="{ 'active': tab === 'karya_tahfidz' }" @click="tab = 'karya_tahfidz'">
         <label><i class="fas fa-medal"></i> Karya Tulis &amp; Tahfidz</label>
     </li>
@@ -45,7 +48,7 @@
 
     <div x-show="tab === 'dashboard'">
         <div>
-            <!-- Custom CSS for interactive elements -->
+
             <style>
                 .score-row-card:hover {
                     transform: translateY(-2px);
@@ -132,9 +135,9 @@
                 </div>
             </div>
 
-            <!-- GRID: Nilai Besar Sekolah & Peringatan Kelas Gak Sehat -->
+
             <div class="grid-2" style="margin-bottom:20px">
-                <!-- 1. Ringkasan 3 Nilai Besar Sekolah -->
+
                 <div class="card" x-data="{
                     scores: [
                         { label: 'Akademik Nasional', val: {{ $akademikNasional ?? 0 }}, target: {{ $targetAkademik ?? 80 }}, trend: 'Evaluasi Otomatis', type: '{{ $typAkademik ?? 'up' }}', status: '{{ $stsAkademik ?? 'Sangat Baik' }}', color: '{{ $clrAkademik ?? 'var(--teal)' }}', desc: 'Rata-rata seluruh nilai akademik reguler (Nasional) dari seluruh siswa aktif.' },
@@ -199,7 +202,7 @@
                     </div>
                 </div>
 
-                <!-- 2. Peringatan Kelas "Gak Sehat" -->
+
                 <div class="card" x-data="{
                     alerts: {{ \Illuminate\Support\Js::from($kelasGakSehat ?? []) }},
                     showToast: false,
@@ -211,7 +214,7 @@
                             setTimeout(() => this.showToast = false, 4000);
                             return;
                         }
-                
+
                         fetch('{{ route('dashboard.pesan-wali') }}', {
                                 method: 'POST',
                                 headers: {
@@ -289,7 +292,7 @@
                         </template>
                     </div>
 
-                    <!-- Alert Toast -->
+
                     <div x-show="showToast" x-transition:enter="transition ease-out duration-300"
                         x-transition:enter-start="opacity-0 transform translate-y-2"
                         x-transition:enter-end="opacity-100 transform translate-y-0"
@@ -302,7 +305,7 @@
                 </div>
             </div>
 
-            <!-- GRID: Charts (Aktivitas Login & Distribusi Siswa) -->
+
             <div class="grid-2" style="margin-bottom:20px">
                 <div class="card">
                     <div class="card-header">
@@ -373,7 +376,7 @@
                 </div>
             </div>
 
-            <!-- 3. Ringkasan Skor Kinerja Guru -->
+
             <div class="card" style="margin-bottom:20px;" x-data="{
                 searchQuery: '',
                 filterTab: 'semua',
@@ -508,7 +511,7 @@
                     </table>
                 </div>
 
-                <!-- Assistance Toast -->
+
                 <div x-show="showToast" x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 transform translate-y-2"
                     x-transition:enter-end="opacity-100 transform translate-y-0"
@@ -1425,7 +1428,7 @@
         </div>
     </div>
 
-    <!-- KURIKULUM & KKM TAB -->
+
     <div x-show="tab === 'kurikulum'" x-data="{
         showToast: false,
         toastMsg: '',
@@ -1469,7 +1472,7 @@
         </div>
 
         <div class="grid-2">
-            <!-- Card KKM -->
+
             <div class="card">
                 <div class="card-header">
                     <h3><i class="fas fa-sliders-h" style="color:var(--teal)"></i> Pengaturan Nilai Minimum (KKM)</h3>
@@ -1512,7 +1515,7 @@
                 </button>
             </div>
 
-            <!-- Card Pasangan Mapel -->
+
             <div class="card">
                 <div class="card-header">
                     <h3><i class="fas fa-link" style="color:var(--blue)"></i> Pasangan Mata Pelajaran (Bilingual)</h3>
@@ -1578,7 +1581,7 @@
             </div>
         </div>
 
-        <!-- Toast Alert -->
+
         <div x-show="showToast" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 transform translate-y-2"
             x-transition:enter-end="opacity-100 transform translate-y-0"
@@ -1590,7 +1593,7 @@
         </div>
     </div>
 
-    <!-- ASESMEN & UJIAN TAB -->
+
     <div x-show="tab === 'asesmen'" x-data="{
         showToast: false,
         toastMsg: '',
@@ -1640,7 +1643,7 @@
         </div>
 
         <div class="grid-2">
-            <!-- Card Bank Soal & Rakit Ujian -->
+
             <div class="card">
                 <div class="card-header">
                     <h3><i class="fas fa-cog" style="color:var(--teal)"></i> Perakitan Ujian Otomatis</h3>
@@ -1679,7 +1682,7 @@
                         </div>
                     </div>
 
-                    <!-- Slider / Input Komposisi Soal -->
+
                     <div
                         style="background:var(--gray-50); padding:12px; border-radius:var(--radius-sm); border: 1px solid var(--border-light); display:flex; flex-direction:column; gap:8px;">
                         <span style="font-size:11px; font-weight:700; color:var(--gray-600);">Komposisi Soal (%)</span>
@@ -1716,7 +1719,7 @@
                     </button>
                 </div>
 
-                <!-- Preview Rakitan Soal -->
+
                 <div x-show="examAssembled"
                     style="margin-top:20px; border-top:1.5px dashed var(--border); padding-top:16px;" x-transition>
                     <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--teal);"><i
@@ -1738,7 +1741,7 @@
                 </div>
             </div>
 
-            <!-- Card Cek Nilai Ketuker -->
+
             <div class="card">
                 <div class="card-header">
                     <h3><i class="fas fa-exclamation-triangle" style="color:var(--orange)"></i> Cek Nilai Tertukar
@@ -1812,7 +1815,7 @@
             </div>
         </div>
 
-        <!-- Toast Alert -->
+
         <div x-show="showToast" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 transform translate-y-2"
             x-transition:enter-end="opacity-100 transform translate-y-0"
@@ -1912,7 +1915,7 @@
                                 }
                                 $isiTeks = implode("\n", $mList);
                             } else {
-                                // bulanan
+
                                 $bList = [];
                                 if (!empty($l->isi['capaian_belajar_bulanan'])) {
                                     foreach ($l->isi['capaian_belajar_bulanan'] as $c) {
@@ -1981,7 +1984,7 @@
         window.guruReportsData = @json($guruReportsData ?? []);
         window.materiAjarData = @json($materiAjarData ?? []);
     </script>
-    <!-- AUDIT & KINERJA GURU TAB -->
+
     <div x-show="tab === 'audit_guru'" x-data="{
         showAuditModal: false,
         selectedMateriId: null,
@@ -2007,8 +2010,8 @@
         calculatePerformance(guruName) {
             let rep = this.guruReports.find(x => x.nama === guruName);
             let mat = this.materiAjar.filter(x => x.guru === guruName);
-    
-            let score = 70; // Base score
+
+            let score = 70;
             if (rep) {
                 if (rep.harian === 'Lengkap') score += 10;
                 if (rep.mingguan === 'Lengkap') score += 10;
@@ -2023,7 +2026,7 @@
         <div class="content-header">
             <div>
                 <h1>Audit &amp; Kinerja Guru</h1>
-                <p style="font-size:14px;color:var(--gray-400);margin-top:2px">Cek Kelengkapan Laporan Mengajar, Approval
+                <p style="font-size:14px;color:var(--gray-400);margin-top:2px">Cek Kelengkapan Jurnal Mengajar, Approval
                     Modul, dan Rapor Kinerja</p>
             </div>
             <div class="header-right">
@@ -2032,7 +2035,7 @@
         </div>
 
         <div class="grid-2" style="margin-bottom: 24px;">
-            <!-- Column 1: Laporan Mengajar -->
+
             <div class="card">
                 <div class="card-header">
                     <h3><i class="fas fa-clipboard-list" style="color:var(--teal)"></i> Kelengkapan Laporan Guru</h3>
@@ -2093,7 +2096,7 @@
                 </div>
             </div>
 
-            <!-- Column 2: Approve Materi Ajar -->
+
             <div class="card">
                 <div class="card-header">
                     <h3><i class="fas fa-check-double" style="color:var(--blue)"></i> Approve Materi Ajar Guru</h3>
@@ -2153,7 +2156,7 @@
             </div>
         </div>
 
-        <!-- Modal Audit Materi (Native Dialog) -->
+
         <style>
             dialog::backdrop {
                 background: rgba(0, 0, 0, 0.5);
@@ -2190,7 +2193,7 @@
         </dialog>
 
 
-        <!-- Detail Laporan Mengajar Guru (Dinamis via Alpine) -->
+
         <div x-show="selectedGuru" class="card" style="margin-bottom: 24px; border-left: 4px solid var(--blue)"
             x-transition>
             <div class="card-header" style="display:flex; justify-content:space-between; align-items:center">
@@ -2233,7 +2236,7 @@
             </div>
         </div>
 
-        <!-- Full width Rapor Kinerja Guru -->
+
         <div class="card">
             <div class="card-header">
                 <h3><i class="fas fa-trophy" style="color:var(--orange)"></i> Rapor Skor Kinerja Guru</h3>
@@ -2285,7 +2288,7 @@
             </div>
         </div>
 
-        <!-- Toast Alert -->
+
         <div x-show="showToast" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 transform translate-y-2"
             x-transition:enter-end="opacity-100 transform translate-y-0"
@@ -2296,7 +2299,7 @@
             <i class="fas fa-check-circle"></i> <span x-text="toastMsg"></span>
         </div>
 
-        <!-- Form Persetujuan Tersembunyi -->
+
         <form id="approve-materi-form" method="POST" style="display:none">
             @csrf
         </form>
@@ -2305,7 +2308,7 @@
         </form>
     </div>
 
-    <!-- KARYA TULIS & TAHFIDZ TAB -->
+
     <div x-show="tab === 'karya_tahfidz'" x-data="{
         showToast: false,
         toastMsg: '',
@@ -2352,7 +2355,7 @@
         </div>
 
         <div class="grid-2">
-            <!-- Column 1: Sidang Karya Tulis -->
+
             <div class="card">
                 <div class="card-header">
                     <h3><i class="fas fa-file-signature" style="color:var(--teal)"></i> Jadwal Sidang Karya Tulis (Kelas
@@ -2364,7 +2367,7 @@
                     </button>
                 </div>
 
-                <!-- Form Tambah Jadwal -->
+
                 <div x-show="showForm"
                     style="background:var(--gray-50); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding:16px; margin-bottom: 16px;"
                     x-transition>
@@ -2470,7 +2473,7 @@
                 </div>
             </div>
 
-            <!-- Column 2: Progress Tahfidz -->
+
             <div class="card">
                 <div class="card-header">
                     <h3><i class="fas fa-quran" style="color:var(--blue)"></i> Progress Tahfidz Siswa</h3>
@@ -2655,7 +2658,7 @@
             </div>
         </div>
 
-        <!-- Toast Alert -->
+
         <div x-show="showToast" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 transform translate-y-2"
             x-transition:enter-end="opacity-100 transform translate-y-0"
@@ -2707,6 +2710,10 @@
 
     <div x-show="tab === 'rapor_supervisi'">
         @include('dashboard.kepala-sekolah-sections.rapor_supervisi')
+    </div>
+
+    <div x-show="tab === 'bahan_ajar_approval'">
+        @include('dashboard.kepala-sekolah-sections.bahan-ajar-approval')
     </div>
 
 @endsection

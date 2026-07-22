@@ -6,19 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
+
+
     public function up(): void
     {
         Schema::table('materi', function (Blueprint $table) {
-            $table->string('status', 50)->default('draft'); // draft, pending, approved, rejected
+            $table->string('status', 50)->default('draft');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
+
+
     public function down(): void
     {
         Schema::table('materi', function (Blueprint $table) {

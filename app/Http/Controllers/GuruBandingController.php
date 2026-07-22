@@ -23,8 +23,8 @@ class GuruBandingController extends Controller
         ]);
 
         $guru = $this->currentGuru($request);
-        
-        // Ensure this grade belongs to a subject this guru teaches
+
+
         $nilai = $banding->nilai()->with('siswa')->firstOrFail();
         if (!$nilai->siswa || !$this->guruCanAccessSiswa($guru, $nilai->siswa, $nilai->mapel_id)) {
             return redirect()->back()->with('error', 'Anda hanya bisa memproses banding untuk kelas dan mapel Anda sendiri.');

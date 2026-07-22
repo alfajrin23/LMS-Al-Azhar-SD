@@ -8,13 +8,13 @@ use Illuminate\Database\Seeder;
 
 class KelasSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+
+
+
     public function run(): void
     {
         $kelas = [
-            // Jenjang SD
+
             ['kode_kelas' => '1', 'nama_kelas' => 'Kelas 1', 'jenjang' => 'SD'],
             ['kode_kelas' => '2', 'nama_kelas' => 'Kelas 2', 'jenjang' => 'SD'],
             ['kode_kelas' => '3', 'nama_kelas' => 'Kelas 3', 'jenjang' => 'SD'],
@@ -24,7 +24,7 @@ class KelasSeeder extends Seeder
             ['kode_kelas' => '6A', 'nama_kelas' => 'Kelas 6A', 'jenjang' => 'SD'],
             ['kode_kelas' => '6B', 'nama_kelas' => 'Kelas 6B', 'jenjang' => 'SD'],
 
-            // Jenjang SMP
+
             ['kode_kelas' => '7', 'nama_kelas' => 'Abu Bakar Ar Razi', 'jenjang' => 'SMP', 'guru_id' => \App\Models\Guru::query()->where('nama', 'Vika Wati Dzulciha, S.Ag')->value('id')],
             ['kode_kelas' => '8A', 'nama_kelas' => 'Ibnu Al Haytam', 'jenjang' => 'SMP'],
             ['kode_kelas' => '8B', 'nama_kelas' => 'Maryam Al Ijliyah', 'jenjang' => 'SMP'],

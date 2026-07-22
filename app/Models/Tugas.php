@@ -8,7 +8,8 @@ class Tugas extends Model
 {
     protected $fillable = [
         'judul', 'deskripsi', 'mapel_id', 'kelas_id',
-        'guru_id', 'tipe', 'tanggal_deadline', 'file_path'
+        'guru_id', 'tipe', 'tanggal_deadline', 'file_path',
+        'tahun_ajaran', 'semester'
     ];
 
     public function mapel()

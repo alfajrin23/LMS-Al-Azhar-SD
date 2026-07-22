@@ -39,7 +39,7 @@
 
 <div class="card" style="max-width:600px" x-data="{ generateOtomatis: false }">
     <div class="card-header"><h3><i class="fas fa-plus" style="color:var(--teal)"></i> Informasi Ujian</h3></div>
-    
+
     @if(session('error'))
         <div style="background:var(--red-light);color:var(--red);padding:10px 14px;border-radius:var(--radius-sm);margin:10px;font-size:13px;font-weight:600">
             <i class="fas fa-exclamation-triangle"></i> {{ session('error') }}
@@ -78,7 +78,7 @@
                 <input type="checkbox" name="generate_otomatis" x-model="generateOtomatis">
                 <i class="fas fa-magic" style="color:var(--purple)"></i> Generate Soal Otomatis dari Bank Soal
             </label>
-            
+
             <div x-show="generateOtomatis" style="margin-top:12px;border-top:1px solid var(--border-light);padding-top:10px" x-transition>
                 <div class="form-group" style="margin-bottom:10px">
                     <label style="display:block;font-size:12px;font-weight:600;color:var(--gray-500);margin-bottom:4px">Jumlah Soal</label>

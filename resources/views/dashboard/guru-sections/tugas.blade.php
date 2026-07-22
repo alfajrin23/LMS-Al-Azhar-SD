@@ -265,7 +265,7 @@
         </div>
     </div>
 
-    {{-- Panel Detail Pengumpulan --}}
+
     <div x-show="selectedTugasId" class="card"
         style="margin-top:16px;border:2px solid var(--blue);border-radius:var(--radius-md)">
         @foreach ($tugas as $t)

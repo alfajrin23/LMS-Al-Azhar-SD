@@ -23,7 +23,7 @@ class SiswaBandingController extends Controller
         $siswa = Siswa::where('user_id', $request->user()->id)->firstOrFail();
         $nilai = Nilai::where('id', $data['nilai_id'])->where('siswa_id', $siswa->id)->firstOrFail();
 
-        // Check if already appealed
+
         $existing = BandingNilai::where('nilai_id', $nilai->id)->first();
         if ($existing) {
             return redirect()->back()->with('error', 'Anda sudah mengajukan banding untuk nilai ini.');

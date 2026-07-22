@@ -1,15 +1,15 @@
-/* ============================================================ */
-/* IMPORT & RESET                                               */
-/* ============================================================ */
+
+
+
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
-/* ============================================================ */
-/* CSS CUSTOM PROPERTIES (60-30-10 Color Palette)                */
-/* ============================================================ */
+
+
+
 :root{
-  /* Primary (30% — dominant brand) */
+
   --teal:#1CA094;
   --teal-dark:#158578;
   --teal-mid:#1a8f82;
@@ -20,7 +20,7 @@
   --blue-light:rgba(4,84,198,0.10);
   --blue-bg:rgba(4,84,198,0.05);
 
-  /* Neutrals (60% — backgrounds, surfaces) */
+
   --bg:#F5F7F7;
   --white:#FFFFFF;
   --gray-50:#F8F9FA;
@@ -35,7 +35,7 @@
   --border:#B8DAD5;
   --border-light:#E0EEE8;
 
-  /* Accents (10% — highlights, warnings, status) */
+
   --cream:#DACBAE;
   --cream-light:rgba(218,203,174,0.25);
   --red:#E85555;
@@ -49,7 +49,7 @@
   --cyan:#0891B2;
   --amber:#D97706;
 
-  /* Shadows & geometry */
+
   --shadow-sm:0 1px 3px rgba(0,0,0,0.05);
   --shadow:0 2px 8px rgba(0,0,0,0.07);
   --shadow-lg:0 4px 20px rgba(0,0,0,0.10);
@@ -70,12 +70,12 @@ body{
   min-height:100vh;
 }
 
-/* ============================================================ */
-/* JS NAVIGATION — Hidden / Active Helpers                      */
-/* ============================================================ */
+
+
+
 .hidden{display:none!important}
 
-/* Active sidebar menu item */
+
 .sidebar-menu li.active a,
 .sidebar-menu li.active label{
   background:var(--teal-light);
@@ -86,10 +86,10 @@ body{
 .sidebar-menu li.active a i,
 .sidebar-menu li.active label i{color:var(--teal)}
 
-/* Active tab nav item */
+
 .tab-nav label.active{background:rgba(255,255,255,.20);color:#fff}
 
-/* Active child tab for parent dashboard */
+
 .child-select{
   padding:8px 14px;border:2px solid var(--border);border-radius:var(--radius-sm);
   font-size:13px;font-family:var(--font);font-weight:600;color:var(--teal);
@@ -97,9 +97,9 @@ body{
 }
 .child-select:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-light)}
 
-/* ============================================================ */
-/* HALAMAN LOGIN                                                 */
-/* ============================================================ */
+
+
+
 .uni-login-page {
   position: relative;
   min-height: 100vh;
@@ -408,9 +408,9 @@ body{
   }
 }
 
-/* ============================================================ */
-/* GLOBAL HEADER (Navigation Bar)                                */
-/* ============================================================ */
+
+
+
 .global-header{
   display:flex;
   background:var(--teal);
@@ -453,15 +453,15 @@ body{
   .tab-nav label i{display:none}
 }
 
-/* ============================================================ */
-/* DASHBOARD LAYOUT                                              */
-/* ============================================================ */
+
+
+
 .dashboard-layout{display:flex;min-height:100vh}
 .mobile-topbar{display:none}
 
-/* ============================================================ */
-/* SIDEBAR & HEADER                                              */
-/* ============================================================ */
+
+
+
 .sidebar{
   width:var(--sidebar-w);
   position:fixed;
@@ -515,14 +515,14 @@ body{
 }
 .sidebar-menu li a:hover i,.sidebar-menu li label:hover i{color:var(--teal)}
 
-/* ============================================================ */
-/* MAIN AREA                                                     */
-/* ============================================================ */
+
+
+
 .main-area{margin-left:var(--sidebar-w);flex:1;padding:24px 32px 40px;min-width:0}
 
-/* ============================================================ */
-/* CONTENT HEADER                                                */
-/* ============================================================ */
+
+
+
 .content-header{
   display:flex;
   align-items:center;
@@ -579,9 +579,9 @@ body{
   border:2px solid var(--white);
 }
 
-/* ============================================================ */
-/* HEADER BUTTONS                                                */
-/* ============================================================ */
+
+
+
 .header-btn{
   display:inline-flex;
   align-items:center;
@@ -602,9 +602,9 @@ body{
 .header-btn.outline{background:transparent;color:var(--blue);border:2px solid var(--blue)}
 .header-btn.outline:hover{background:var(--blue);color:#fff}
 
-/* ============================================================ */
-/* KOMPONEN GLOBAL — Card                                        */
-/* ============================================================ */
+
+
+
 .card{
   background:var(--white);
   border-radius:var(--radius);
@@ -626,18 +626,18 @@ body{
 .card-header label{font-size:12px;color:var(--blue);font-weight:600;cursor:pointer;text-decoration:none}
 .card-header label:hover{text-decoration:underline}
 
-/* ============================================================ */
-/* KOMPONEN GLOBAL — Grid System                                 */
-/* ============================================================ */
+
+
+
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .grid-2x2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .flex-row{display:flex;gap:16px;flex-wrap:wrap}
 
-/* ============================================================ */
-/* KOMPONEN GLOBAL — Stat Card                                   */
-/* ============================================================ */
+
+
+
 .stat-card{
   background:var(--white);
   border-radius:var(--radius);
@@ -670,14 +670,14 @@ body{
 .stat-card .stat-compare.up{color:var(--green)}
 .stat-card .stat-compare.down{color:var(--red)}
 
-/* Stat card — centered variant (for teacher dashboard) */
+
 .stat-card.centered{flex-direction:column;text-align:center;padding:20px 16px}
 .stat-card.centered .stat-icon-wrap{margin:0 auto 10px}
 .stat-card.centered .stat-number{font-size:32px}
 
-/* ============================================================ */
-/* KOMPONEN GLOBAL — Badge                                       */
-/* ============================================================ */
+
+
+
 .badge{
   display:inline-block;
   padding:3px 10px;
@@ -696,7 +696,7 @@ body{
 .badge.cyan{background:var(--cyan);color:#fff}
 .badge.amber{background:var(--amber);color:#fff}
 
-/* Badge — light variants for table contexts */
+
 .badge.light.teal{background:var(--teal-light);color:var(--teal);font-weight:600}
 .badge.light.blue{background:var(--blue-light);color:var(--blue);font-weight:600}
 .badge.light.orange{background:var(--orange-bg);color:var(--amber);font-weight:600}
@@ -705,14 +705,14 @@ body{
 .badge.light.purple{background:rgba(124,58,237,0.10);color:var(--purple);font-weight:600}
 .badge.light.pink{background:rgba(219,39,119,0.10);color:var(--pink);font-weight:600}
 
-/* Status badges — Terlambat, Mendekati, Selesai */
+
 .badge.status-terlambat{background:var(--red);color:#fff}
 .badge.status-mendekati{background:var(--orange);color:#fff}
 .badge.status-selesai{background:var(--green);color:#fff}
 
-/* ============================================================ */
-/* KOMPONEN GLOBAL — Button                                      */
-/* ============================================================ */
+
+
+
 .btn{
   display:inline-flex;
   align-items:center;
@@ -750,9 +750,9 @@ body{
 .btn-small.outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
 .btn-small.outline:hover{background:var(--blue);color:#fff}
 
-/* ============================================================ */
-/* KOMPONEN GLOBAL — Tables                                      */
-/* ============================================================ */
+
+
+
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border-light);vertical-align:middle}
@@ -760,9 +760,9 @@ th{font-weight:600;color:var(--gray-400);font-size:11px;text-transform:uppercase
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--gray-50)}
 
-/* ============================================================ */
-/* KOMPONEN GLOBAL — Progress Bar                                */
-/* ============================================================ */
+
+
+
 .progress-wrap{margin:6px 0}
 .progress-bar{
   height:8px;
@@ -785,9 +785,9 @@ tr:hover td{background:var(--gray-50)}
 }
 .progress-label .subject-name{font-weight:600;color:var(--text)}
 
-/* ============================================================ */
-/* KOMPONEN GLOBAL — Schedule / Task / Rapor Lists               */
-/* ============================================================ */
+
+
+
 .schedule-item{
   display:flex;
   align-items:center;
@@ -836,9 +836,9 @@ tr:hover td{background:var(--gray-50)}
 .msg-sender{font-weight:600;font-size:14px}
 .msg-preview{font-size:12px;color:var(--gray-500);margin-top:2px}
 
-/* ============================================================ */
-/* KOMPONEN GLOBAL — Chart Bars                                  */
-/* ============================================================ */
+
+
+
 .chart-area{display:flex;align-items:flex-end;gap:4px;padding:16px 0;height:160px}
 .chart-bar{
   flex:1;
@@ -880,9 +880,9 @@ tr:hover td{background:var(--gray-50)}
 .h-bar-fill.cyan{background:var(--cyan)}
 .h-bar-fill.green{background:var(--green)}
 
-/* ============================================================ */
-/* KOMPONEN GLOBAL — Grade Colors & Trend                        */
-/* ============================================================ */
+
+
+
 .grade-A{color:#2e7d32}
 .grade-B{color:var(--blue)}
 .grade-C{color:var(--orange)}
@@ -890,9 +890,9 @@ tr:hover td{background:var(--gray-50)}
 .trend-up{color:var(--green)}
 .trend-down{color:var(--red)}
 
-/* ============================================================ */
-/* KOMPONEN GLOBAL — Parent Dropdown                             */
-/* ============================================================ */
+
+
+
 .parent-dropdown{
   padding:8px 14px;
   border-radius:var(--radius-sm);
@@ -906,9 +906,9 @@ tr:hover td{background:var(--gray-50)}
   min-width:160px;
 }
 
-/* ============================================================ */
-/* KOMPONEN GLOBAL — Attendance Summary                          */
-/* ============================================================ */
+
+
+
 .att-grid{display:flex;gap:12px;flex-wrap:wrap}
 .att-item{
   flex:1;min-width:72px;
@@ -928,10 +928,10 @@ tr:hover td{background:var(--gray-50)}
 .att-item.izin{border-color:var(--orange)}
 .att-item.sakit{border-color:var(--blue)}
 
-/* ============================================================ */
-/* DASHBOARD SISWA SD                                            */
-/* ============================================================ */
-/* Welcome banner */
+
+
+
+
 .welcome-banner{
   background:var(--cream-light);
   border-radius:var(--radius);
@@ -957,7 +957,7 @@ tr:hover td{background:var(--gray-50)}
   box-shadow:0 2px 12px rgba(28,160,148,.30);
 }
 
-/* Badge cards section */
+
 .badge-section{margin-top:8px}
 .badge-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .badge-card{
@@ -980,7 +980,7 @@ tr:hover td{background:var(--gray-50)}
   filter:grayscale(.6);
 }
 
-/* Streak harian */
+
 .streak-row{
   display:flex;
   align-items:center;
@@ -1006,10 +1006,10 @@ tr:hover td{background:var(--gray-50)}
 .streak-dot.inactive{background:var(--gray-100);color:var(--gray-300)}
 .streak-text{font-size:13px;font-weight:600;color:var(--orange);white-space:nowrap}
 
-/* ============================================================ */
-/* DASHBOARD SISWA SMP                                           */
-/* ============================================================ */
-/* Blue header variant */
+
+
+
+
 .header-blue .content-header{
   background:var(--blue);
   margin:-24px -32px 24px -32px;
@@ -1023,7 +1023,7 @@ tr:hover td{background:var(--gray-50)}
 .header-blue .content-header .header-right .notif-badge::after{border-color:var(--blue)}
 .header-blue .content-header .header-right span{color:#fff}
 
-/* SMP minimal welcome */
+
 .welcome-mini{
   border-left:4px solid var(--blue);
   padding:14px 18px;
@@ -1035,7 +1035,7 @@ tr:hover td{background:var(--gray-50)}
 .welcome-mini p{font-size:14px;color:var(--gray-500)}
 .welcome-mini strong{color:var(--blue)}
 
-/* Performa cards */
+
 .performa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .performa-card{
   background:var(--white);
@@ -1061,7 +1061,7 @@ tr:hover td{background:var(--gray-50)}
 .performa-card .performa-value{font-size:28px;font-weight:800;color:var(--text);line-height:1.2}
 .performa-card .performa-label{font-size:12px;color:var(--gray-400);margin-top:2px}
 
-/* Mini line chart */
+
 .mini-chart{margin-top:8px}
 .mini-chart .chart-row{
   display:flex;align-items:center;gap:10px;
@@ -1078,7 +1078,7 @@ tr:hover td{background:var(--gray-50)}
   background:linear-gradient(90deg, var(--teal), var(--blue));
 }
 
-/* Leaderboard */
+
 .leaderboard{list-style:none;padding:0}
 .leaderboard li{
   display:flex;align-items:center;gap:12px;
@@ -1111,10 +1111,10 @@ tr:hover td{background:var(--gray-50)}
   color:var(--teal);
 }
 
-/* ============================================================ */
-/* DASHBOARD GURU                                                */
-/* ============================================================ */
-/* Quick Action Bar */
+
+
+
+
 .quick-action{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
 .quick-action-item{
   background:var(--white);
@@ -1132,7 +1132,7 @@ tr:hover td{background:var(--gray-50)}
 .quick-action-item .qa-icon{font-size:28px;margin-bottom:8px;display:block}
 .quick-action-item .qa-label{font-size:13px;font-weight:600;color:var(--gray-600)}
 
-/* Mini Calendar */
+
 .mini-calendar{margin-top:8px}
 .cal-table{width:100%;border-collapse:collapse;font-size:12px;text-align:center}
 .cal-table th{color:var(--gray-400);font-weight:600;font-size:10px;padding:6px 4px;text-transform:uppercase;border:none}
@@ -1154,16 +1154,16 @@ tr:hover td{background:var(--gray-50)}
   background:var(--orange);
 }
 
-/* Progress per class row */
+
 .class-progress{display:flex;align-items:center;gap:8px}
 .class-progress .cp-bar{flex:1;height:6px;background:var(--gray-100);border-radius:99px;overflow:hidden}
 .class-progress .cp-fill{height:100%;border-radius:99px;background:linear-gradient(90deg, var(--teal), var(--blue))}
 .class-progress .cp-label{font-size:11px;font-weight:600;color:var(--gray-400);min-width:32px;text-align:right}
 
-/* ============================================================ */
-/* DASHBOARD ADMIN                                               */
-/* ============================================================ */
-/* Enhanced stat card with icon left */
+
+
+
+
 .admin-stat-card{
   display:flex;
   align-items:center;
@@ -1195,7 +1195,7 @@ tr:hover td{background:var(--gray-50)}
 .admin-stat-card .asc-compare.up{color:var(--green)}
 .admin-stat-card .asc-compare.down{color:var(--red)}
 
-/* Filter toggle */
+
 .filter-bar{display:flex;gap:6px;margin-bottom:16px}
 .filter-btn{
   padding:6px 16px;
@@ -1212,13 +1212,13 @@ tr:hover td{background:var(--gray-50)}
 .filter-btn.active{background:var(--blue);color:#fff}
 .filter-btn:hover:not(.active){background:var(--gray-200)}
 
-/* Distribusi table */
+
 .distribusi-table td:last-child{text-align:center}
 
-/* ============================================================ */
-/* DASHBOARD ORANG TUA                                           */
-/* ============================================================ */
-/* Gradient banner */
+
+
+
+
 .parent-banner{
   background:linear-gradient(135deg, var(--cream), var(--border));
   border-radius:var(--radius);
@@ -1249,7 +1249,7 @@ tr:hover td{background:var(--gray-50)}
 .parent-banner .pb-info .pb-meta span{font-size:12px;color:var(--gray-500)}
 .parent-banner .pb-info .pb-meta i{margin-right:4px}
 
-/* Quick message */
+
 .quick-msg{
   display:flex;gap:10px;margin-top:8px;
 }
@@ -1282,12 +1282,12 @@ tr:hover td{background:var(--gray-50)}
 }
 .quick-msg .btn-send:hover{background:var(--teal-dark)}
 
-/* Rapor table with trend */
+
 .rapor-table td:last-child{text-align:center;font-size:13px}
 
-/* ============================================================ */
-/* TAHFIDZ SECTION                                              */
-/* ============================================================ */
+
+
+
 .tahfidz-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:8px 0}
 .tahfidz-stat{text-align:center;padding:16px;background:var(--gray-50);border-radius:var(--radius-sm);border:1px solid var(--border-light)}
 .tahfidz-stat .tahfidz-stat-number{font-size:28px;font-weight:800;line-height:1.2}
@@ -1315,9 +1315,9 @@ tr:hover td{background:var(--gray-50)}
 
 
 
-/* ============================================================ */
-/* MOBILE HAMBURGER TOGGLE                                      */
-/* ============================================================ */
+
+
+
 .hamburger{
   display:none;
   width:36px;height:36px;
@@ -1349,9 +1349,9 @@ tr:hover td{background:var(--gray-50)}
   z-index:99;
   top:60px;
 }
-/* ============================================================ */
-/* OVERLAY                                                       */
-/* ============================================================ */
+
+
+
 .overlay{
   display:none;
   position:fixed;
@@ -1361,8 +1361,8 @@ tr:hover td{background:var(--gray-50)}
 }
 .overlay.show{display:block}
 
-/* ============================================================ */
-/* ============================================================ */
+
+
 @media(max-width:1024px){
   .grid-2,.grid-4,.grid-3{grid-template-columns:1fr 1fr}
   .performa-grid{grid-template-columns:1fr 1fr}
@@ -1374,9 +1374,9 @@ tr:hover td{background:var(--gray-50)}
   .header-blue .content-header{margin:-20px -20px 20px -20px;padding:16px 20px}
 }
 
-/* ============================================================ */
-/* RESPONSIVE — Mobile                                           */
-/* ============================================================ */
+
+
+
 @media(max-width:768px){
   .dashboard-layout{display:block;min-height:100vh}
   .mobile-topbar{
@@ -1447,9 +1447,9 @@ tr:hover td{background:var(--gray-50)}
   .header-blue .content-header{margin:-16px -16px 20px -16px;padding:14px 16px}
 }
 
-/* ============================================================ */
-/* RESPONSIVE — Small Mobile                                     */
-/* ============================================================ */
+
+
+
 @media(max-width:480px){
   .grid-4,.grid-3{grid-template-columns:1fr 1fr}
   .stat-card.centered .stat-number{font-size:24px}
@@ -1457,14 +1457,14 @@ tr:hover td{background:var(--gray-50)}
   .streak-dots{flex-wrap:wrap}
 }
 
-/* ============================================================ */
-/* TABLE RESPONSIVE                                              */
-/* ============================================================ */
+
+
+
 .table-responsive{overflow-x:auto}
 .table-responsive table{min-width:600px}
 
-/* ============================================================ */
-/* SEARCH RESULTS                                                */
-/* ============================================================ */
+
+
+
 #searchResults a:hover{background:var(--teal-bg);color:var(--teal)!important}
 #searchResults a:last-child{border-bottom:none!important}

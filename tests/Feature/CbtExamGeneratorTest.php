@@ -23,12 +23,12 @@ class CbtExamGeneratorTest extends TestCase
 
     public function test_cbt_exam_automatic_generation_and_printing()
     {
-        $guruUser = User::where('role', 'guru')->first();
-        $guru = Guru::where('user_id', $guruUser->id)->first();
-        $mapel = Mapel::first();
-        $kelas = Kelas::first();
+        $guruUser = User::where('email', 'guru.demo@alazharjayaindonesia.sch.id')->firstOrFail();
+        $guru = Guru::where('user_id', $guruUser->id)->firstOrFail();
+        $mapel = Mapel::where('kode', 'MTK')->firstOrFail();
+        $kelas = Kelas::where('kode_kelas', '1-DEMO')->firstOrFail();
 
-        // 1. Create a pool of questions in the question bank (same mapel)
+
         $examBase = CbtExam::create([
             'judul' => 'Base Exam Bank',
             'tipe' => 'ulangan',
@@ -39,7 +39,7 @@ class CbtExamGeneratorTest extends TestCase
             'status' => 'approved',
         ]);
 
-        // Create 3 easy questions
+
         for ($i = 1; $i <= 3; $i++) {
             CbtSoal::create([
                 'cbt_exam_id' => $examBase->id,
@@ -52,7 +52,7 @@ class CbtExamGeneratorTest extends TestCase
             ]);
         }
 
-        // Create 5 medium questions
+
         for ($i = 4; $i <= 8; $i++) {
             CbtSoal::create([
                 'cbt_exam_id' => $examBase->id,
@@ -65,7 +65,7 @@ class CbtExamGeneratorTest extends TestCase
             ]);
         }
 
-        // Create 2 hard questions
+
         for ($i = 9; $i <= 10; $i++) {
             CbtSoal::create([
                 'cbt_exam_id' => $examBase->id,
@@ -78,7 +78,7 @@ class CbtExamGeneratorTest extends TestCase
             ]);
         }
 
-        // 2. Generate a new CBT exam automatically using 30% Mudah, 50% Sedang, 20% Sulit
+
         $response = $this->actingAs($guruUser)->post('/guru/cbt', [
             'judul' => 'Ujian Hasil Generator',
             'tipe' => 'uts',
@@ -88,9 +88,9 @@ class CbtExamGeneratorTest extends TestCase
             'metode' => 'cetak',
             'generate_otomatis' => 'on',
             'jumlah_soal_gen' => 10,
-            'persen_mudah' => 30,  // Should pick 3 easy
-            'persen_sedang' => 50, // Should pick 5 medium
-            'persen_sulit' => 20,  // Should pick 2 hard
+            'persen_mudah' => 30,
+            'persen_sedang' => 50,
+            'persen_sulit' => 20,
         ]);
 
         $response->assertRedirect();
@@ -103,12 +103,12 @@ class CbtExamGeneratorTest extends TestCase
         $newExam = CbtExam::where('judul', 'Ujian Hasil Generator')->first();
         $this->assertEquals(10, $newExam->soals()->count());
 
-        // Assert difficulty distribution of generated questions
+
         $this->assertEquals(3, $newExam->soals()->where('kesulitan', 'mudah')->count());
         $this->assertEquals(5, $newExam->soals()->where('kesulitan', 'sedang')->count());
         $this->assertEquals(2, $newExam->soals()->where('kesulitan', 'sulit')->count());
 
-        // 3. Test printing the exam layout
+
         $printResponse = $this->actingAs($guruUser)->get("/guru/cbt/{$newExam->id}/print");
         $printResponse->assertOk();
         $printResponse->assertSee('Lembar Kunci Jawaban');

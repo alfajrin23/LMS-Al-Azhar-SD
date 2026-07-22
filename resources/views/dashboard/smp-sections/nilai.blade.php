@@ -134,13 +134,13 @@
             @endforeach
         </div>
         @php
-            // Mengambil data nilai per tugas/bab riil dari database (tabel nilai & pengumpulan_tugas)
+
             $chartDataReal = [];
             foreach ($mapels as $m) {
                 $chartDataReal[$m->id] = [];
             }
 
-            // 1. Cek tabel nilai yang terkait dengan tugas (jika ada)
+
             $tugasNilai = \App\Models\Nilai::with(['tugas', 'mapel'])
                 ->where('siswa_id', $siswa->id)
                 ->whereNotNull('tugas_id')
@@ -158,7 +158,7 @@
                 }
             }
 
-            // 2. Cek tabel pengumpulan_tugas yang sudah dinilai guru
+
             $pengumpulan = \App\Models\PengumpulanTugas::with('tugas.mapel')
                 ->where('siswa_id', $siswa->id)
                 ->whereNotNull('nilai')
@@ -220,7 +220,7 @@
         </div>
     </div>
 
-    <!-- Modal Ajukan Banding Nilai -->
+
     <div x-show="showBandingModal" class="modal-backdrop"
         style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:9999; backdrop-filter:blur(4px)"
         x-cloak>
