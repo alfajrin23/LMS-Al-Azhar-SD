@@ -41,12 +41,17 @@
                     if(te) te.remove();
                 }, 5000);
             </script>
-            <aside class="sidebar">
-                <div style="display:flex;align-items:center;padding:0 20px 12px;border-bottom:1px solid var(--border-light);margin-bottom:8px">
-                    <button class="hamburger d-md-none" id="sidebarToggle" type="button" style="display:none">
-                        <span></span><span></span><span></span>
-                    </button>
+            <header class="mobile-topbar">
+                <button class="hamburger" id="sidebarToggle" type="button" aria-label="Buka menu" aria-controls="dashboardSidebar" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+                <div class="mobile-topbar-brand">
+                    <strong>LMS Al Azhar Jaya</strong>
+                    <span>{{ auth()->user()->role === 'siswa_sd' ? 'SDIT' : (auth()->user()->role === 'siswa_smp' ? 'SMPIT' : 'SDIT & SMPIT') }} Al Azhar Jaya Indonesia</span>
                 </div>
+            </header>
+
+            <aside class="sidebar" id="dashboardSidebar">
                 <div class="brand">
                     <h2><i class="fas fa-graduation-cap"></i>LMS Al Azhar Jaya</h2>
                     <p>{{ auth()->user()->role === 'siswa_sd' ? 'SDIT' : (auth()->user()->role === 'siswa_smp' ? 'SMPIT' : 'SDIT & SMPIT') }} Al Azhar Jaya Indonesia</p>
@@ -78,18 +83,40 @@
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.querySelector('.sidebar');
         const overlay = document.querySelector('.overlay');
-        if (sidebarToggle) {
+        const sidebarMenu = document.querySelector('.sidebar-menu');
+        const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+        const closeSidebar = () => {
+            if (!sidebar) return;
+            sidebar.classList.remove('sidebar-mobile');
+            if (overlay) overlay.classList.remove('show');
+            if (sidebarToggle) sidebarToggle.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('sidebar-open');
+        };
+
+        if (sidebarToggle && sidebar) {
             sidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('sidebar-mobile');
-                if (overlay) overlay.classList.toggle('show');
+                const isOpen = sidebar.classList.toggle('sidebar-mobile');
+                if (overlay) overlay.classList.toggle('show', isOpen);
+                this.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                document.body.classList.toggle('sidebar-open', isOpen);
             });
         }
         if (overlay) {
-            overlay.addEventListener('click', function() {
-                sidebar.classList.remove('sidebar-mobile');
-                this.classList.remove('show');
+            overlay.addEventListener('click', closeSidebar);
+        }
+        if (sidebarMenu) {
+            sidebarMenu.addEventListener('click', function(e) {
+                if (isMobile() && e.target.closest('a, label, button')) {
+                    closeSidebar();
+                }
             });
         }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeSidebar();
+        });
+        window.addEventListener('resize', function() {
+            if (!isMobile()) closeSidebar();
+        });
 
         // Global search
         let searchTimeout;
