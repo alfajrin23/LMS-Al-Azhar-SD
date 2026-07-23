@@ -53,6 +53,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/guru/materi/{materi}/request-approval', [\App\Http\Controllers\GuruMateriController::class, 'requestApproval'])->name('guru.materi.request-approval');
         Route::post('/guru/materi/{materi}/cancel-approval', [\App\Http\Controllers\GuruMateriController::class, 'cancelApproval'])->name('guru.materi.cancel-approval');
         Route::post('/guru/materi/{materi}/delete', [\App\Http\Controllers\GuruMateriController::class, 'destroy'])->name('guru.materi.delete');
+        Route::post('/guru/dokumen-pembelajaran/requests', [\App\Http\Controllers\GuruLearningDocumentController::class, 'store'])->name('guru.documents.requests.store');
+        Route::put('/guru/dokumen-pembelajaran/requests/{learningDocumentRequest}', [\App\Http\Controllers\GuruLearningDocumentController::class, 'update'])->name('guru.documents.requests.update');
+        Route::post('/guru/dokumen-pembelajaran/requests/{learningDocumentRequest}/submit', [\App\Http\Controllers\GuruLearningDocumentController::class, 'submit'])->name('guru.documents.requests.submit');
+        Route::post('/guru/dokumen-pembelajaran/requests/{learningDocumentRequest}/cancel', [\App\Http\Controllers\GuruLearningDocumentController::class, 'cancel'])->name('guru.documents.requests.cancel');
         Route::post('/guru/pengumuman', [\App\Http\Controllers\GuruPengumumanController::class, 'store'])->name('guru.pengumuman.store');
         Route::post('/guru/pesan', [\App\Http\Controllers\GuruPesanController::class, 'store'])->name('guru.pesan.store');
         Route::post('/guru/kelas', [\App\Http\Controllers\GuruKelasController::class, 'store'])->name('guru.kelas.store');
@@ -126,6 +130,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/kepala-sekolah/materi/{materi}/approve', [\App\Http\Controllers\GuruMateriController::class, 'approve'])->name('kepala.materi.approve');
         Route::post('/kepala-sekolah/materi/{materi}/reject', [\App\Http\Controllers\GuruMateriController::class, 'reject'])->name('kepala.materi.reject');
         Route::post('/kepala-sekolah/materi/{materi}/request-revision', [\App\Http\Controllers\GuruMateriController::class, 'requestRevision'])->name('kepala.materi.request-revision');
+        Route::post('/kepala-sekolah/dokumen-pembelajaran', [\App\Http\Controllers\KepalaLearningDocumentController::class, 'store'])->name('kepala.documents.store');
+        Route::put('/kepala-sekolah/dokumen-pembelajaran/{document}', [\App\Http\Controllers\KepalaLearningDocumentController::class, 'update'])->name('kepala.documents.update');
+        Route::post('/kepala-sekolah/dokumen-pembelajaran/bulk-update', [\App\Http\Controllers\KepalaLearningDocumentController::class, 'bulkUpdate'])->name('kepala.documents.bulk-update');
+        Route::post('/kepala-sekolah/dokumen-pembelajaran/requests/{learningDocumentRequest}/approve', [\App\Http\Controllers\KepalaLearningDocumentController::class, 'approve'])->name('kepala.documents.requests.approve');
+        Route::post('/kepala-sekolah/dokumen-pembelajaran/requests/{learningDocumentRequest}/reject', [\App\Http\Controllers\KepalaLearningDocumentController::class, 'reject'])->name('kepala.documents.requests.reject');
+        Route::post('/kepala-sekolah/dokumen-pembelajaran/requests/{learningDocumentRequest}/clarify', [\App\Http\Controllers\KepalaLearningDocumentController::class, 'clarify'])->name('kepala.documents.requests.clarify');
+        Route::post('/kepala-sekolah/dokumen-pembelajaran/requests/{learningDocumentRequest}/revoke', [\App\Http\Controllers\KepalaLearningDocumentController::class, 'revoke'])->name('kepala.documents.requests.revoke');
     });
 
     Route::middleware('role:orang_tua')->group(function () {
@@ -134,6 +145,9 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/materi/{materi}/download', [\App\Http\Controllers\GuruMateriController::class, 'download'])->name('materi.download');
+    Route::get('/dokumen-pembelajaran/{document}/download', \App\Http\Controllers\LearningDocumentDownloadController::class)
+        ->middleware('role:guru,kepala_sekolah,admin')
+        ->name('learning-documents.download');
     Route::get('/rapor/pdf', [\App\Http\Controllers\RaporController::class, 'pdf'])
         ->middleware('role:siswa_sd,siswa_smp,orang_tua,guru,kepala_sekolah,admin')->name('rapor.pdf');
     Route::get('/rapor/{jenis}/pdf', [\App\Http\Controllers\RaporController::class, 'pdf'])

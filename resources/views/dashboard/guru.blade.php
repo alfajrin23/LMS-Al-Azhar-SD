@@ -33,6 +33,9 @@
     <li :class="{'active': tab === 'materi'}" @click="tab = 'materi'">
         <label><i class="fas fa-folder-open"></i> Bahan Ajar</label>
     </li>
+    <li :class="{'active': tab === 'permintaan_dokumen'}" @click="tab = 'permintaan_dokumen'">
+        <label><i class="fas fa-file-arrow-down"></i> Permintaan Dokumen</label>
+    </li>
     <li :class="{'active': tab === 'workbook'}" @click="tab = 'workbook'">
         <label><i class="fas fa-book"></i> Workbook</label>
     </li>
@@ -89,6 +92,9 @@
     </div>
     <div x-show="tab === 'materi'">
         @include('dashboard.guru-sections.materi')
+    </div>
+    <div x-show="tab === 'permintaan_dokumen'">
+        @include('dashboard.guru-sections.permintaan-dokumen')
     </div>
     <div x-show="tab === 'workbook'">
         @include('dashboard.guru-sections.workbook')

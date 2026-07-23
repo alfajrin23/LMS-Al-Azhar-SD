@@ -32,4 +32,15 @@ class Kelas extends Model
     {
         return $this->belongsTo(Guru::class, 'guru_id');
     }
+
+    public function learningDocuments()
+    {
+        return $this->belongsToMany(LearningDocument::class, 'learning_document_classes', 'class_id', 'learning_document_id')
+            ->withTimestamps();
+    }
+
+    public function learningDocumentRequests()
+    {
+        return $this->hasMany(LearningDocumentRequest::class, 'class_id');
+    }
 }

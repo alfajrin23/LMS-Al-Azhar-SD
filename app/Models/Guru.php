@@ -96,4 +96,9 @@ class Guru extends Model
     {
         return $this->hasMany(AdministrasiGuruChecklist::class);
     }
+
+    public function learningDocumentRequests()
+    {
+        return $this->hasMany(LearningDocumentRequest::class, 'teacher_id');
+    }
 }

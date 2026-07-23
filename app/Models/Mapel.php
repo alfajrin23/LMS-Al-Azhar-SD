@@ -29,6 +29,16 @@ class Mapel extends Model
         return $this->hasMany(Nilai::class);
     }
 
+    public function learningDocuments()
+    {
+        return $this->hasMany(LearningDocument::class, 'subject_id');
+    }
+
+    public function learningDocumentRequests()
+    {
+        return $this->hasMany(LearningDocumentRequest::class, 'subject_id');
+    }
+
     public function scopeAkademik($query)
     {
         return $query->whereNotIn('kode', [

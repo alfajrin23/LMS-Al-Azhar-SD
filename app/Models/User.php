@@ -54,4 +54,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Pesan::class, 'penerima_id');
     }
+
+    public function uploadedLearningDocuments()
+    {
+        return $this->hasMany(LearningDocument::class, 'uploaded_by');
+    }
+
+    public function learningDocumentDownloads()
+    {
+        return $this->hasMany(LearningDocumentDownload::class);
+    }
 }

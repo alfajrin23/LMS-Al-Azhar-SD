@@ -246,6 +246,7 @@ class DashboardController extends Controller
             $materiJadwal = Jadwal::where('guru_id', $guru->id)->get();
             $materiMapelIds = $materiJadwal->pluck('mapel_id')->merge($guru->mapels->pluck('id'))->filter()->unique();
             $materiKelasIds = $materiJadwal->pluck('kelas_id')->filter()->unique();
+            $learningDocumentData = $this->learningDocumentTeacherData($request, $guru, $materiKelasIds, $materiMapelIds);
 
             $data = [
                 'user'                 => $user,
@@ -309,6 +310,7 @@ class DashboardController extends Controller
                     ->orderBy('nama')
                     ->get(),
             ];
+            $data = array_merge($data, $learningDocumentData);
         }
 
         if ($role === 'admin') {
@@ -661,6 +663,7 @@ class DashboardController extends Controller
                 ->whereHas('user', fn ($q) => $q->whereIn('role', ['siswa_sd', 'siswa_smp']))
                 ->orderBy('nama')
                 ->get();
+            $learningDocumentData = $this->learningDocumentHeadmasterData($request);
 
             $data = [
                 'statSiswa' => $totalSiswa,
@@ -708,6 +711,7 @@ class DashboardController extends Controller
                 'materiApprovalMapels' => \App\Models\Mapel::akademik()->orderBy('nama_mapel')->get(),
                 'materiApprovalKelas' => \App\Models\Kelas::orderBy('jenjang')->orderBy('kode_kelas')->get(),
             ];
+            $data = array_merge($data, $learningDocumentData);
         } elseif ($role === 'admin') {
             $totalSiswa = \App\Models\Siswa::count();
             $totalGuru = \App\Models\Guru::count();
@@ -901,6 +905,213 @@ class DashboardController extends Controller
             'total_tidak_hadir' => $sakit + $izin + $alpha,
             'persentase_hadir' => $total > 0 ? round(($hadir / $total) * 100, 2) : 0,
             'tidak_hadir_records' => $records->whereIn('status', ['sakit', 'izin', 'alpha'])->values(),
+        ];
+    }
+
+    private function learningDocumentTeacherData(Request $request, Guru $guru, $kelasIds, $mapelIds): array
+    {
+        $catalogQuery = \App\Models\LearningDocument::query()
+            ->visibleInTeacherCatalog()
+            ->with(['subject', 'classes'])
+            ->where(function ($query) use ($kelasIds) {
+                $query->whereHas('classes', fn ($classQuery) => $classQuery->whereIn('kelas.id', $kelasIds))
+                    ->orWhereDoesntHave('classes');
+            });
+
+        if ($mapelIds->isNotEmpty()) {
+            $catalogQuery->whereIn('subject_id', $mapelIds);
+        }
+
+        if ($request->filled('teacher_doc_class_id')) {
+            $catalogQuery->whereHas('classes', fn ($query) => $query->where('kelas.id', $request->integer('teacher_doc_class_id')));
+        }
+        if ($request->filled('teacher_doc_subject_id')) {
+            $catalogQuery->where('subject_id', $request->integer('teacher_doc_subject_id'));
+        }
+        if ($request->filled('teacher_doc_type')) {
+            $catalogQuery->where('document_type', $request->input('teacher_doc_type'));
+        }
+        if ($request->filled('teacher_doc_semester')) {
+            $catalogQuery->where('semester', $request->input('teacher_doc_semester'));
+        }
+        if ($request->filled('teacher_doc_academic_year')) {
+            $catalogQuery->where('academic_year', $request->input('teacher_doc_academic_year'));
+        }
+
+        $requestsQuery = \App\Models\LearningDocumentRequest::query()
+            ->where('teacher_id', $guru->id)
+            ->with(['requestedDocument.subject', 'approvedDocument.subject', 'kelas', 'subject', 'approvalHistories.actor'])
+            ->latest();
+
+        if ($request->filled('teacher_request_status')) {
+            $requestsQuery->where('status', $request->input('teacher_request_status'));
+        }
+
+        return [
+            'learningDocumentTypes' => config('learning_documents.document_types'),
+            'learningDocumentKelasOptions' => \App\Models\Kelas::query()
+                ->whereIn('id', $kelasIds)
+                ->where('jenjang', 'SD')
+                ->orderBy('kode_kelas')
+                ->get(),
+            'learningDocumentMapelOptions' => \App\Models\Mapel::akademik()
+                ->whereIn('id', $mapelIds)
+                ->orderBy('nama_mapel')
+                ->get(),
+            'learningDocumentCatalog' => $catalogQuery
+                ->latest('uploaded_at')
+                ->paginate(8, ['*'], 'teacher_catalog_page')
+                ->withQueryString(),
+            'learningDocumentRequests' => $requestsQuery
+                ->paginate(8, ['*'], 'teacher_request_page')
+                ->withQueryString(),
+            'approvedLearningDocumentRequests' => \App\Models\LearningDocumentRequest::query()
+                ->where('teacher_id', $guru->id)
+                ->where('status', \App\Models\LearningDocumentRequest::STATUS_APPROVED)
+                ->whereNull('revoked_at')
+                ->with(['approvedDocument.subject', 'kelas', 'subject'])
+                ->latest('reviewed_at')
+                ->get()
+                ->filter(fn (\App\Models\LearningDocumentRequest $row) => $row->isAccessibleNow() && $row->approvedDocument?->hasStoredFile()),
+            'learningDocumentDownloads' => \App\Models\LearningDocumentDownload::query()
+                ->whereHas('request', fn ($query) => $query->where('teacher_id', $guru->id))
+                ->with(['document.subject', 'request'])
+                ->latest('downloaded_at')
+                ->take(20)
+                ->get(),
+            'learningDocumentRequestStats' => [
+                'pending' => \App\Models\LearningDocumentRequest::where('teacher_id', $guru->id)->where('status', \App\Models\LearningDocumentRequest::STATUS_PENDING)->count(),
+                'approved' => \App\Models\LearningDocumentRequest::where('teacher_id', $guru->id)->where('status', \App\Models\LearningDocumentRequest::STATUS_APPROVED)->count(),
+                'rejected' => \App\Models\LearningDocumentRequest::where('teacher_id', $guru->id)->where('status', \App\Models\LearningDocumentRequest::STATUS_REJECTED)->count(),
+            ],
+        ];
+    }
+
+    private function learningDocumentHeadmasterData(Request $request): array
+    {
+        $documentsQuery = \App\Models\LearningDocument::query()
+            ->with(['subject', 'classes', 'uploader'])
+            ->withCount(['requests', 'downloads']);
+
+        if ($request->filled('doc_search')) {
+            $search = $request->input('doc_search');
+            $documentsQuery->where(function ($query) use ($search) {
+                $query->where('title', 'like', '%'.$search.'%')
+                    ->orWhere('original_filename', 'like', '%'.$search.'%');
+            });
+        }
+        if ($request->filled('doc_class_id')) {
+            $documentsQuery->whereHas('classes', fn ($query) => $query->where('kelas.id', $request->integer('doc_class_id')));
+        }
+        if ($request->filled('doc_subject_id')) {
+            $documentsQuery->where('subject_id', $request->integer('doc_subject_id'));
+        }
+        if ($request->filled('doc_type')) {
+            $documentsQuery->where('document_type', $request->input('doc_type'));
+        }
+        if ($request->filled('doc_semester')) {
+            $documentsQuery->where('semester', $request->input('doc_semester'));
+        }
+        if ($request->filled('doc_academic_year')) {
+            $documentsQuery->where('academic_year', $request->input('doc_academic_year'));
+        }
+        if ($request->filled('doc_classification_status')) {
+            $documentsQuery->where('classification_status', $request->input('doc_classification_status'));
+        }
+        if ($request->filled('doc_active')) {
+            $documentsQuery->where('is_active', $request->boolean('doc_active'));
+        }
+        if ($request->filled('doc_sensitive')) {
+            $documentsQuery->where('is_sensitive', $request->boolean('doc_sensitive'));
+        }
+        if ($request->filled('doc_uploaded_by')) {
+            $documentsQuery->where('uploaded_by', $request->integer('doc_uploaded_by'));
+        }
+        if ($request->filled('doc_uploaded_from')) {
+            $documentsQuery->whereDate('uploaded_at', '>=', $request->input('doc_uploaded_from'));
+        }
+        if ($request->filled('doc_uploaded_to')) {
+            $documentsQuery->whereDate('uploaded_at', '<=', $request->input('doc_uploaded_to'));
+        }
+
+        $requests = \App\Models\LearningDocumentRequest::query()
+            ->with(['teacher.user', 'kelas', 'subject', 'requestedDocument', 'approvedDocument'])
+            ->latest()
+            ->paginate(10, ['*'], 'document_request_page')
+            ->withQueryString();
+
+        $stats = [
+            'total_dokumen' => \App\Models\LearningDocument::count(),
+            'total_materi' => \App\Models\LearningDocument::whereIn('document_type', ['materi_pelajaran', 'modul_ajar', 'bahan_ajar'])->count(),
+            'total_soal' => \App\Models\LearningDocument::where('document_type', 'like', 'soal_%')->count(),
+            'total_kisi' => \App\Models\LearningDocument::where('document_type', 'kisi_kisi')->count(),
+            'total_kunci' => \App\Models\LearningDocument::where('document_type', 'kunci_jawaban')->count(),
+            'perlu_verifikasi' => \App\Models\LearningDocument::needsVerification()->count(),
+            'pending' => \App\Models\LearningDocumentRequest::where('status', \App\Models\LearningDocumentRequest::STATUS_PENDING)->count(),
+            'approved' => \App\Models\LearningDocumentRequest::where('status', \App\Models\LearningDocumentRequest::STATUS_APPROVED)->count(),
+            'rejected' => \App\Models\LearningDocumentRequest::where('status', \App\Models\LearningDocumentRequest::STATUS_REJECTED)->count(),
+            'download_hari_ini' => \App\Models\LearningDocumentDownload::whereDate('downloaded_at', now()->toDateString())->count(),
+        ];
+
+        return [
+            'learningDocumentTypes' => config('learning_documents.document_types'),
+            'learningDocumentKelasOptions' => \App\Models\Kelas::query()
+                ->where('jenjang', 'SD')
+                ->orderBy('kode_kelas')
+                ->get(),
+            'learningDocumentMapelOptions' => \App\Models\Mapel::akademik()->orderBy('nama_mapel')->get(),
+            'learningDocumentUploaders' => \App\Models\User::query()
+                ->whereIn('role', ['kepala_sekolah', 'admin'])
+                ->orderBy('name')
+                ->get(),
+            'learningDocuments' => $documentsQuery
+                ->latest('uploaded_at')
+                ->latest()
+                ->paginate(10, ['*'], 'dokumen_page')
+                ->withQueryString(),
+            'learningDocumentRequestsForReview' => $requests,
+            'learningDocumentApprovalHistories' => \App\Models\LearningDocumentApprovalHistory::query()
+                ->with(['request.teacher.user', 'actor'])
+                ->latest()
+                ->take(30)
+                ->get(),
+            'learningDocumentDownloads' => \App\Models\LearningDocumentDownload::query()
+                ->with(['document.subject', 'request.teacher.user', 'user'])
+                ->latest('downloaded_at')
+                ->take(30)
+                ->get(),
+            'documentsNeedVerification' => \App\Models\LearningDocument::query()
+                ->needsVerification()
+                ->with(['subject', 'classes'])
+                ->latest()
+                ->take(20)
+                ->get(),
+            'learningDocumentApprovalDocuments' => \App\Models\LearningDocument::query()
+                ->where('is_active', true)
+                ->whereNotNull('storage_path')
+                ->with(['subject', 'classes'])
+                ->orderBy('title')
+                ->get(),
+            'learningDocumentStats' => $stats,
+            'learningDocumentTopRequested' => \App\Models\LearningDocument::query()
+                ->withCount('requests')
+                ->orderByDesc('requests_count')
+                ->take(5)
+                ->get(),
+            'learningDocumentRequestsByClass' => \App\Models\LearningDocumentRequest::query()
+                ->selectRaw('class_id, COUNT(*) as total')
+                ->with('kelas')
+                ->groupBy('class_id')
+                ->orderByDesc('total')
+                ->take(6)
+                ->get(),
+            'learningDocumentRequestsBySubject' => \App\Models\LearningDocumentRequest::query()
+                ->selectRaw('subject_id, COUNT(*) as total')
+                ->with('subject')
+                ->groupBy('subject_id')
+                ->orderByDesc('total')
+                ->take(6)
+                ->get(),
         ];
     }
 

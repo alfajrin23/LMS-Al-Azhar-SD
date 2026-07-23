@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             MapelSeeder::class,
+            LearningDocumentCategorySeeder::class,
             GuruSeeder::class,
             KelasSeeder::class,
             KelasQuranSeeder::class,
@@ -284,6 +285,8 @@ class DatabaseSeeder extends Seeder
         foreach ($pengaturanData as $pd) {
             Pengaturan::firstOrCreate(['key' => $pd['key']], ['value' => $pd['value']]);
         }
+
+        $this->call(LearningDocumentDemoSeeder::class);
 
         $this->command->info('Database seeded successfully!');
     }

@@ -30,6 +30,9 @@
     <li :class="{ 'active': tab === 'bahan_ajar_approval' }" @click="tab = 'bahan_ajar_approval'">
         <label><i class="fas fa-folder-open"></i> Approval Bahan Ajar</label>
     </li>
+    <li :class="{ 'active': tab === 'dokumen_pembelajaran' }" @click="tab = 'dokumen_pembelajaran'">
+        <label><i class="fas fa-box-archive"></i> Dokumen Pembelajaran</label>
+    </li>
     <li :class="{ 'active': tab === 'karya_tahfidz' }" @click="tab = 'karya_tahfidz'">
         <label><i class="fas fa-medal"></i> Karya Tulis &amp; Tahfidz</label>
     </li>
@@ -2714,6 +2717,10 @@
 
     <div x-show="tab === 'bahan_ajar_approval'">
         @include('dashboard.kepala-sekolah-sections.bahan-ajar-approval')
+    </div>
+
+    <div x-show="tab === 'dokumen_pembelajaran'">
+        @include('dashboard.kepala-sekolah-sections.dokumen-pembelajaran')
     </div>
 
 @endsection
